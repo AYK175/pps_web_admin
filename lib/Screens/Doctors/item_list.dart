@@ -31,7 +31,7 @@ class ItemList extends StatelessWidget {
       body: Container(
         width: w,
         height: h,
-        color: Color.fromRGBO(166, 166, 166, 1.0),
+        color: Color.fromRGBO(232, 232, 232, 1.0),
 
         child: Row(
           children: [
@@ -51,7 +51,7 @@ class ItemList extends StatelessWidget {
                     accountEmail: Text('How is Your Pet Health?' ,style: TextStyle(
                       color: Colors.white,
                     )),
-                    /*currentAccountPicture: CircleAvatar(
+                    currentAccountPicture: CircleAvatar(
                 child: ClipOval(
                   child: Image.asset('android/Images/logo.png',
                     fit: BoxFit.fitHeight,
@@ -59,7 +59,7 @@ class ItemList extends StatelessWidget {
                     height: 110,
                   ),
                 ),
-              ),*/
+              ),
                     decoration: BoxDecoration(
                       //color:Color.fromRGBO(26, 59, 106, 0.023529411764705882),
                     ),
@@ -97,13 +97,13 @@ class ItemList extends StatelessWidget {
                         );
                       }
                   ),
-                  ListTile(
+                  /*ListTile(
                     leading: Icon(Icons.settings,color: Colors.white,),
                     title: Text('Settings',style: TextStyle(
                       color: Colors.white,
                     )),
                     onTap: () => null,
-                  ),
+                  ),*/
                   Divider(),
                   ListTile(
                     title: Text('Logout',style: TextStyle(

@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                   accountEmail: Text('How is Your Pet Health?' ,style: TextStyle(
                     color: Colors.white,
                   )),
-                  /*currentAccountPicture: CircleAvatar(
+                  currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.asset('android/Images/logo.png',
                   fit: BoxFit.fitHeight,
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                   height: 110,
                 ),
               ),
-            ),*/
+            ),
                   decoration: BoxDecoration(
                     //color:Color.fromRGBO(26, 59, 106, 0.023529411764705882),
                   ),
@@ -94,13 +94,13 @@ class _HomePageState extends State<HomePage> {
                       );
                     }
                 ),
-                ListTile(
+                /*ListTile(
                   leading: Icon(Icons.settings,color: Colors.white,),
                   title: Text('Settings',style: TextStyle(
                     color: Colors.white,
                   )),
                   onTap: () => null,
-                ),
+                ),*/
                 Divider(),
                 ListTile(
                   title: Text('Logout',style: TextStyle(
