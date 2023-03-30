@@ -24,9 +24,11 @@ class _MainPageState extends State<MainPage> {
     userCount = await getUser();
     vetCount = await getVets();
     clinicCount = await getClinic();
-    bookingCount = await getBookings();
+    bookingList = await getBookings();
     vetList   =await fetchDoctors();
+    newVetList =await fetchNewDoctors();
     userList=await fetchUsers();
+    bookingCount = bookingList.length;
     setState(() {});
     print(userList);
   }

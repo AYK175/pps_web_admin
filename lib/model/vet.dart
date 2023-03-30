@@ -13,6 +13,7 @@ class Vets {
   String? specialization;
   String? uid;
   String? year;
+  String? price;
 
   Vets(
       {this.profileStatus,
@@ -28,6 +29,7 @@ class Vets {
         this.qualification,
         this.specialization,
         this.uid,
+        this.price,
         this.year});
 
   Vets.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,7 @@ class Vets {
     cnic = json['cnic'];
     description = json['description'];
     email = json['email'];
+    price = json['price'];
     name = json['name'];
     phoneNumber = json['phone number'];
     profileImg = json['profileImg'];
@@ -63,6 +66,7 @@ class Vets {
     data['specialization'] = specialization;
     data['uid'] = uid;
     data['year'] = year;
+    data['price'] = price;
     return data;
   }
 }

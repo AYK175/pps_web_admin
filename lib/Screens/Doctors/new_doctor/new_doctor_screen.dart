@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pps_web_admin/Screens/Doctors/doctor_view_profile/view_profile_screen.dart';
 import 'package:pps_web_admin/Screens/Doctors/doctors_edit_screen/doctors_edit_screen.dart';
 import 'package:pps_web_admin/Screens/HomePage/home.dart';
 import 'package:pps_web_admin/components/widget/dashboard_name.dart';
@@ -12,23 +12,22 @@ import 'package:pps_web_admin/constants.dart';
 import 'package:pps_web_admin/model/vet.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../Doctors/item_list.dart';
 
-class DoctorScreen extends StatefulWidget {
-  DoctorScreen({Key? key}) : super(key: key);
+class NewDoctorScreen extends StatefulWidget {
+  NewDoctorScreen({Key? key}) : super(key: key);
 
   @override
   _DoctorScreenState createState() => _DoctorScreenState();
 }
 
-class _DoctorScreenState extends State<DoctorScreen> {
+class _DoctorScreenState extends State<NewDoctorScreen> {
   // final user= FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Row(
           children: [
-          CustomDrawer(),
+            CustomDrawer(),
             SizedBox(
               width: 0.02.sw,
             ),
@@ -36,9 +35,9 @@ class _DoctorScreenState extends State<DoctorScreen> {
               flex: 5,
               child: Column(
                 children: [
-                 DashboardName(title: "Doctors Dashboard",),
+                  DashboardName(title: "New Doctors",),
                   Expanded(
-                    child: GridView.builder(
+                    child: newVetList.length>0?GridView.builder(
                       padding: REdgeInsets.all(10),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisSpacing: 10,
@@ -70,14 +69,15 @@ class _DoctorScreenState extends State<DoctorScreen> {
                                                       borderRadius: BorderRadius.circular(8.0),
                                                     )
                                                 ),
+                                                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green)
                                             ),
                                             onPressed: () async {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(builder: (context) {
-                                                    return ViewDoctorScreen(vets: vetList[index],);
-                                                  }));
-
-                                            }, child: Text("View profile"),
+                                                  FirebaseFirestore.instance.collection("vets").doc(newVetList[index].uid).update({"ProfileStatus":"Approved"});
+                                                  vetList.clear();
+                                                  newVetList.clear();
+                                                  await getValue();
+                                                  setState(() {});
+                                            }, child: Text("Approve"),
                                           ),
                                         ),
                                         SizedBox(width: 10,),
@@ -85,18 +85,18 @@ class _DoctorScreenState extends State<DoctorScreen> {
                                           child: ElevatedButton(
                                             style: ButtonStyle(
                                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                  ),
+                                                    RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(8.0),
+                                                    ),
                                                 ),
-                                                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red)
+                                              backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red)
                                             ),
                                             onPressed: () async {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(builder: (context) {
-                                                    return DoctorEditScreen(vets: vetList[index],);
-                                                  }));
-                                            }, child: Text("Edit Profile"),
+                                              FirebaseFirestore.instance.collection("vets").doc(newVetList[index].uid).update({"ProfileStatus":"Not Approved"});
+                                              setState(() {});
+                                              await getValue();
+                                              setState(() {});
+                                            }, child: Text("Not Approve"),
                                           ),
                                         ),
                                       ],
@@ -108,8 +108,8 @@ class _DoctorScreenState extends State<DoctorScreen> {
                           ),
                         );
                       },
-                      itemCount: vetList.length,
-                    ),
+                      itemCount: newVetList.length,
+                    ):Center(child: Text("No Vet To Show",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),), ),
                   ),
                 ],
               ),
@@ -117,10 +117,16 @@ class _DoctorScreenState extends State<DoctorScreen> {
           ],
         ));
   }
+  getValue() async {
+    vetList   =await fetchDoctors();
+    newVetList   =await fetchNewDoctors();
+    setState(() {});
+    print(userList);
+  }
   Widget _StackBgCard() => Column(
-        children: [
-          Expanded(
-              child: Container(
+    children: [
+      Expanded(
+          child: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("assets/images/doctor.jpg"),
@@ -129,12 +135,12 @@ class _DoctorScreenState extends State<DoctorScreen> {
               color: Colors.blue.withOpacity(0.5),
             ),
           )),
-          Expanded(
-              child: Container(
+      Expanded(
+          child: Container(
             color: Colors.white,
           )),
-        ],
-      );
+    ],
+  );
 
 
 
@@ -150,12 +156,12 @@ class _DoctorScreenState extends State<DoctorScreen> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
-                image: NetworkImage(vetList[index]
+                image: NetworkImage(newVetList[index]
                     .profileImg
                     .toString()),fit: BoxFit.cover)),
       ),
-      title: Text(vetList[index].name.toString()),
-      subtitle: Text(vetList[index].email.toString()),
+      title: Text(newVetList[index].name.toString()),
+      subtitle: Text(newVetList[index].email.toString()),
     ),
   );
 
@@ -167,11 +173,11 @@ class _DoctorScreenState extends State<DoctorScreen> {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].year.toString()),subtitle: Text("Doctors Experience"),),),)),
+        Expanded(child: Card(child: Center(child: ListTile(title: Text(newVetList[index].year.toString()),subtitle: Text("Doctors Experience"),),),)),
         SizedBox(width:10,),
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].qualification.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("Doctors Qualification"),),),)),
+        Expanded(child: Card(child: Center(child: ListTile(title: Text(newVetList[index].qualification.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("Doctors Qualification"),),),)),
         SizedBox(width:10,),
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].price.toString()),subtitle: Text("Doctors Services"),),),)),
+        Expanded(child: Card(child: Center(child: ListTile(title: Text(newVetList[index].price.toString()),subtitle: Text("Doctors Services"),),),)),
       ],),
   );
 
