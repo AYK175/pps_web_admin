@@ -3,8 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pps_web_admin/Screens/Doctors/doctor_view_profile/view_profile_screen.dart';
+import 'package:pps_web_admin/Screens/Doctors/doctors_edit_screen/doctors_edit_screen.dart';
 import 'package:pps_web_admin/Screens/HomePage/home.dart';
-import 'package:pps_web_admin/Screens/doctors_edit_screen/doctors_edit_screen.dart';
 import 'package:pps_web_admin/components/widget/dashboard_name.dart';
 import 'package:pps_web_admin/components/widget/drawer.dart';
 import 'package:pps_web_admin/constants.dart';
@@ -40,8 +41,8 @@ class _DoctorScreenState extends State<DoctorScreen> {
                     child: GridView.builder(
                       padding: REdgeInsets.all(10),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
                           crossAxisCount: 3),
                       itemBuilder: (context, index) {
                         return Card(
@@ -59,21 +60,47 @@ class _DoctorScreenState extends State<DoctorScreen> {
                                   Container(
                                     height: 0.1.sh,
                                     margin: REdgeInsets.all(10),
-                                    child: Center(child: ElevatedButton(
-                                        style: ButtonStyle(
-                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                )
-                                            )
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            style: ButtonStyle(
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(8.0),
+                                                    )
+                                                ),
+                                            ),
+                                            onPressed: () async {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(builder: (context) {
+                                                    return ViewDoctorScreen(vets: vetList[index],);
+                                                  }));
+
+                                            }, child: Text("View profile"),
+                                          ),
                                         ),
-                                      onPressed: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) {
-                                              return DoctorEditScreen(vets: vetList[index],);
-                                            }));
-                                      }, child: Text("Edit Profile"),
-                                    ),),
+                                        SizedBox(width: 10,),
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            style: ButtonStyle(
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(8.0),
+                                                  ),
+                                                ),
+                                                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red)
+                                            ),
+                                            onPressed: () async {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(builder: (context) {
+                                                    return DoctorEditScreen(vets: vetList[index],);
+                                                  }));
+                                            }, child: Text("Edit Profile"),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -135,16 +162,16 @@ class _DoctorScreenState extends State<DoctorScreen> {
 
 
   Widget _doctorStats({required int index})=> Container(
-    height: 0.15.sh,
+    height: 0.1.sh,
     margin: REdgeInsets.all(10),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].year.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("Doctors Experience"),),),)),
+        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].year.toString()),subtitle: Text("Doctors Experience"),),),)),
         SizedBox(width:10,),
         Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].qualification.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("Doctors Qualification"),),),)),
         SizedBox(width:10,),
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].profileType.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("PRofile Type"),),),)),
+        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].price.toString()),subtitle: Text("Doctors Services"),),),)),
       ],),
   );
 

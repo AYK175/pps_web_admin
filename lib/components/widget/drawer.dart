@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pps_web_admin/Screens/Doctors/doctor_screen.dart';
+import 'package:pps_web_admin/Screens/Doctors/new_doctor/new_doctor_screen.dart';
 import 'package:pps_web_admin/Screens/HomePage/home.dart';
+import 'package:pps_web_admin/Screens/chat_screen/chat_screen.dart';
 import 'package:pps_web_admin/Screens/users/user_screen.dart';
+
+import '../../Screens/clinics.dart';
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
 
@@ -71,7 +75,7 @@ class CustomDrawer extends StatelessWidget {
                 }),
             ListTile(
                 leading: Icon(
-                  Icons.person,
+                  Icons.monitor_heart_outlined,
                   color: Colors.white,
                 ),
                 title: Text('Vets',
@@ -85,6 +89,37 @@ class CustomDrawer extends StatelessWidget {
                       }));
                 }),
             ListTile(
+                leading: Icon(
+                  Icons.new_releases_rounded,
+                  color: Colors.white,
+                ),
+                title: Text('New Vets',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
+                        return NewDoctorScreen();
+                      }));
+                }),
+            ListTile(
+              leading: Icon(
+                Icons.headset,
+                color: Colors.white,
+              ),
+              title: Text('Contact and support',
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                      return ChatScreen();
+                    }));
+              },
+            ),
+            ListTile(
               leading: Icon(
                 Icons.settings,
                 color: Colors.white,
@@ -93,8 +128,12 @@ class CustomDrawer extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                   )),
-              onTap: () => null,
-            ),
+              onTap: () {
+            Navigator.push(context,
+            MaterialPageRoute(builder: (context) {
+            return MyTable(data: [],);
+            }));
+            },),
             Divider(),
             ListTile(
               title: Text('Logout',

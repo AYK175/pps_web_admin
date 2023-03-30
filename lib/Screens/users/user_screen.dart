@@ -1,9 +1,17 @@
+import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pps_web_admin/Screens/HomePage/home.dart';
+import 'package:pps_web_admin/Screens/user_view_screen/user_view_screen.dart';
 import 'package:pps_web_admin/components/widget/dashboard_name.dart';
 import 'package:pps_web_admin/components/widget/drawer.dart';
 import 'package:pps_web_admin/constants.dart';
+import 'package:pps_web_admin/model/vet.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../Doctors/item_list.dart';
 
 class UserScreen extends StatefulWidget {
   UserScreen({Key? key}) : super(key: key);
@@ -59,7 +67,9 @@ class _UserScreenState extends State<UserScreen> {
                                               )
                                           )
                                       ),
-                                      onPressed: () {}, child: Text("Edit Profile"),
+                                      onPressed: () {
+                                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserViewScreen(user: userList[index],)));
+                                      }, child: Text("View Profile"),
                                     ),),
                                   ),
                                 ],
@@ -129,7 +139,7 @@ class _UserScreenState extends State<UserScreen> {
       children: [
         Expanded(child: Card(child: Center(child: ListTile(title: Text(userList[index].phnumber.toString()),subtitle: Text("Phone number"),),),)),
         SizedBox(width:10,),
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(userList[index].cNIC.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("CNIC"),),),)),
+        Expanded(child: Card(child: Center(child: ListTile(title: Text(userList[index].cNIC.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("User CNIC"),),),)),
         SizedBox(width:10,),
       ],),
   );
