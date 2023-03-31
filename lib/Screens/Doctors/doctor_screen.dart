@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,9 @@ class DoctorScreen extends StatefulWidget {
 
 class _DoctorScreenState extends State<DoctorScreen> {
   // final user= FirebaseAuth.instance.currentUser!;
+  bool _sortAscending = true;
+  int _sortColumnIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,80 +40,129 @@ class _DoctorScreenState extends State<DoctorScreen> {
               flex: 5,
               child: Column(
                 children: [
-                 DashboardName(title: "Doctors Dashboard",),
+                 DashboardName(title: "Vets List",),
                   Expanded(
-                    child: GridView.builder(
-                      padding: REdgeInsets.all(10),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          crossAxisCount: 3),
-                      itemBuilder: (context, index) {
-                        return Card(
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Stack(
-                            children: [
-                              _StackBgCard(),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  _doctorsProfile(index: index),
-                                  _doctorStats(index: index),
-                                  Container(
-                                    height: 0.1.sh,
-                                    margin: REdgeInsets.all(10),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: ElevatedButton(
-                                            style: ButtonStyle(
-                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(8.0),
-                                                    )
-                                                ),
-                                            ),
-                                            onPressed: () async {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(builder: (context) {
-                                                    return ViewDoctorScreen(vets: vetList[index],);
-                                                  }));
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15.0,bottom:10,left:5, right:5),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance.collection("vets").snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return CircularProgressIndicator();
+                    }
+                    List<QueryDocumentSnapshot> docs = snapshot.data!.docs;
+                    return DataTable(
+                      headingRowColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(26, 59, 106, 1.0)),
+                      headingTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white,fontSize: 20),
+                      headingRowHeight: 80,
+                      horizontalMargin: 3,
+                      dataRowHeight: 40,
+                      dividerThickness:2,
+                      dataTextStyle: TextStyle(fontSize: 18,color: Colors.black),
+                      showBottomBorder: true,
+                      decoration: BoxDecoration(border: Border.all(color: Color.fromRGBO(26, 59, 106, 1.0), width: 1)),
 
-                                            }, child: Text("View profile"),
-                                          ),
-                                        ),
-                                        SizedBox(width: 10,),
-                                        Expanded(
-                                          child: ElevatedButton(
-                                            style: ButtonStyle(
-                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                  ),
-                                                ),
-                                                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red)
-                                            ),
-                                            onPressed: () async {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(builder: (context) {
-                                                    return DoctorEditScreen(vets: vetList[index],);
-                                                  }));
-                                            }, child: Text("Edit Profile"),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      itemCount: vetList.length,
-                    ),
+                      sortAscending: _sortAscending,
+                      sortColumnIndex: _sortColumnIndex,
+                      columns: [
+                        DataColumn(
+                          label: Text("Name"),
+                          onSort: (columnIndex, sortAscending) {
+                            setState(() {
+                              _sortAscending = sortAscending;
+                              _sortColumnIndex = columnIndex;
+                            });
+                            if (sortAscending) {
+                              docs.sort((a, b) => a["name"].toLowerCase().compareTo(b["name"].toLowerCase()));
+                            } else {
+                              docs.sort((a, b) => b["name"].toLowerCase().compareTo(a["name"].toLowerCase()));
+                            }
+                          },
+                        ),
+                        DataColumn(
+                          label: Text("Email"),
+                          onSort: (columnIndex, sortAscending) {
+                            setState(() {
+                              _sortAscending = sortAscending;
+                              _sortColumnIndex = columnIndex;
+                            });
+                            if (sortAscending) {
+                              docs.sort((a, b) => a["email"].toLowerCase().compareTo(b["email"].toLowerCase()));
+                            } else {
+                              docs.sort((a, b) => b["email"].toLowerCase().compareTo(a["email"].toLowerCase()));
+                            }
+                          },
+                        ),
+                        DataColumn(
+                          label: Text("Profile Type"),
+                          onSort: (columnIndex, sortAscending) {
+                            setState(() {
+                              _sortAscending = sortAscending;
+                              _sortColumnIndex = columnIndex;
+                            });
+                            if (sortAscending) {
+                              docs.sort((a, b) => a["ProfileType"].toLowerCase().compareTo(b["ProfileType"].toLowerCase()));
+                            } else {
+                              docs.sort((a, b) => b["ProfileType"].toLowerCase().compareTo(a["ProfileType"].toLowerCase()));
+                            }
+                          },
+                        ),
+                        DataColumn(
+                          label: Text("Profile Status"),
+                          onSort: (columnIndex, sortAscending) {
+                            setState(() {
+                              _sortAscending = sortAscending;
+                              _sortColumnIndex = columnIndex;
+                            });
+                            if (sortAscending) {
+                              docs.sort((a, b) => a["ProfileStatus"].toLowerCase().compareTo(b["ProfileStatus"].toLowerCase()));
+                            } else {
+                              docs.sort((a, b) => b["ProfileStatus"].toLowerCase().compareTo(a["ProfileStatus"].toLowerCase()));
+                            }
+                          },
+                        ),
+                        DataColumn(label: Text("View Profile")),
+                        DataColumn(label: Text("Edit Profile")),
+
+                      ],
+                      rows: docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                        return DataRow(cells: [
+                          DataCell(Text(data["name"])),
+                          DataCell(Text(data["email"])),
+                          DataCell(Text(data["ProfileType"])),
+                          DataCell(Text(data["ProfileStatus"])),
+                          DataCell(InkWell(
+                              onTap: (){
+                                Vets vet = vetList.firstWhere((vet) => vet.uid == document.id);
+
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return ViewDoctorScreen(vets: vet);
+                                    }));
+
+                              },
+
+                              child: Text("View profile",style: TextStyle(color: Colors.blue),))),
+                          DataCell(InkWell(
+                              onTap: (){
+                                Vets vet = vetList.firstWhere((vet) => vet.uid == document.id);
+
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return DoctorEditScreen(vets: vet);
+                                    }));
+
+                              },
+
+                              child: Text("Edit profile",style: TextStyle(color: Colors.blue),))),
+
+                        ]);
+                      }).toList(),
+                    );
+                  },
+                ),
+              )
                   ),
                 ],
               ),
@@ -117,62 +170,10 @@ class _DoctorScreenState extends State<DoctorScreen> {
           ],
         ));
   }
-  Widget _StackBgCard() => Column(
-        children: [
-          Expanded(
-              child: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/images/doctor.jpg"),
-                    fit: BoxFit.cover)),
-            child: Container(
-              color: Colors.blue.withOpacity(0.5),
-            ),
-          )),
-          Expanded(
-              child: Container(
-            color: Colors.white,
-          )),
-        ],
-      );
 
 
 
-  Widget _doctorsProfile({required int index})=>  Card(
-    margin: REdgeInsets.all(10),
-    color: Colors.white,
-    child: ListTile(
-      contentPadding: REdgeInsets.all(10),
-      visualDensity: const VisualDensity(vertical: 4),
-      leading: Container(
-        width: 100,
-        height: 100,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-                image: NetworkImage(vetList[index]
-                    .profileImg
-                    .toString()),fit: BoxFit.cover)),
-      ),
-      title: Text(vetList[index].name.toString()),
-      subtitle: Text(vetList[index].email.toString()),
-    ),
-  );
 
 
-
-  Widget _doctorStats({required int index})=> Container(
-    height: 0.1.sh,
-    margin: REdgeInsets.all(10),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].year.toString()),subtitle: Text("Doctors Experience"),),),)),
-        SizedBox(width:10,),
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].qualification.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("Doctors Qualification"),),),)),
-        SizedBox(width:10,),
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].price.toString()),subtitle: Text("Doctors Services"),),),)),
-      ],),
-  );
 
 }

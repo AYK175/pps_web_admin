@@ -14,6 +14,8 @@ import 'package:pps_web_admin/model/users_model.dart';
 import 'package:pps_web_admin/model/vet.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../services.dart';
+
 
 class ViewDoctorScreen extends StatefulWidget {
   Vets vets;
@@ -28,6 +30,7 @@ class _ViewDoctorScreenState extends State<ViewDoctorScreen> {
   List<Bookings> booking=[];
   List<Users> user=[];
   late Stream<QuerySnapshot> _clinicsStream;
+  late Stream<QuerySnapshot> _servicesStream;
 
   @override
   void initState() {
@@ -42,6 +45,12 @@ class _ViewDoctorScreenState extends State<ViewDoctorScreen> {
           .collection('Clinics')
           .where('vetids', isEqualTo: widget.vets.uid)
           .snapshots();
+
+      _servicesStream = FirebaseFirestore.instance
+          .collection('Services')
+          .where('userId', isEqualTo: widget.vets.uid)
+          .snapshots();
+
     });
     super.initState();
   }
@@ -104,54 +113,124 @@ class _ViewDoctorScreenState extends State<ViewDoctorScreen> {
                         ),
                       ),
 
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: StreamBuilder<QuerySnapshot>(
-      stream: _clinicsStream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-      if (!snapshot.hasData) {
-      return CircularProgressIndicator();
-      }
+                      if (widget.vets.profileType.toString()=="Clinic") ...[
+                        Text("Clinics",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
 
-      List<DataRow> rows = [];
-      snapshot.data!.docs.forEach((clinic) {
-      String clinicName = clinic['clinicName'];
-      String clinicAddress = clinic['clinicAddress'];
-      String timeSlotDuration = clinic['timeSlotDuration'];
-      String startTime = clinic['startTime'];
-      String endTime = clinic['endTime'];
-      List<String> selectedDays = List<String>.from(clinic['selectedDays']);
+                        Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: StreamBuilder<QuerySnapshot>(
+    stream: _clinicsStream,
+    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+    if (!snapshot.hasData) {
+    return CircularProgressIndicator();
+    }
 
-      rows.add(DataRow(cells: [
-      DataCell(Text(clinicName)),
-      DataCell(Text(clinicAddress)),
-      DataCell(Text(timeSlotDuration)),
-      DataCell(Text(startTime)),
-      DataCell(Text(endTime)),
-      DataCell(Text(selectedDays.join(', '))),
-        DataCell(InkWell(
+    List<DataRow> rows = [];
+    snapshot.data!.docs.forEach((clinic) {
+    String clinicName = clinic['clinicName'];
+    String clinicAddress = clinic['clinicAddress'];
+    String timeSlotDuration = clinic['timeSlotDuration'];
+    String startTime = clinic['startTime'];
+    String endTime = clinic['endTime'];
+    List<String> selectedDays = List<String>.from(clinic['selectedDays']);
 
-            child: Text("Edit",style: TextStyle(color: Colors.blue),)),),
+    rows.add(DataRow(cells: [
+    DataCell(Text(clinicName)),
+    DataCell(Text(clinicAddress)),
+    DataCell(Text(timeSlotDuration)),
+    DataCell(Text(startTime)),
+    DataCell(Text(endTime)),
+    DataCell(Text(selectedDays.skip(1).join(', '))),
+    DataCell(InkWell(
+    onTap: () {
+    Navigator.of(context).push(
+    MaterialPageRoute(
+    builder: (context) =>
+    ViewServicesScreen(ClinicID:clinic.id,)));
+    },
 
-      ]));
-      });
+    child: Text("View Services",style: TextStyle(color: Colors.blue),)),),
 
-      return DataTable(
-      columns: [
-      DataColumn(label: Text('Clinic Name')),
-      DataColumn(label: Text('Clinic Address')),
-      DataColumn(label: Text('Time Slot Duration')),
-      DataColumn(label: Text('Start Time')),
-      DataColumn(label: Text('End Time')),
-      DataColumn(label: Text('Selected Days')),
-        DataColumn(label: Text('Services')),
+    ]));
+    });
 
-      ],
-      rows: rows,
-      );
-      },
-      ),
+    return DataTable(
+    columns: [
+    DataColumn(label: Text('Clinic Name')),
+    DataColumn(label: Text('Clinic Address')),
+    DataColumn(label: Text('Time Slot Duration')),
+    DataColumn(label: Text('Start Time')),
+    DataColumn(label: Text('End Time')),
+    DataColumn(label: Text('Selected Days')),
+    DataColumn(label: Text('Services')),
+
+    ],
+    rows: rows,
+    );
+    },
     ),
+    ),]
+                      else ...[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+
+                          child:StreamBuilder<QuerySnapshot>(
+                            stream: _servicesStream,
+                            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (!snapshot.hasData) {
+                                return Center(child: CircularProgressIndicator());
+                              }
+
+                              List<DataRow> rows = [];
+                              snapshot.data!.docs.forEach((service) {
+                                String serviceTitle = service['serviceTitle'];
+                                String serviceDescription = service['serviceDescription'];
+                                String price = service['price'];
+
+                                rows.add(DataRow(cells: [
+                                  DataCell(Text(serviceTitle)),
+                                  DataCell(Text(serviceDescription)),
+                                  DataCell(Text(price)),
+                                ]));
+                              });
+
+                              return Container(
+                                padding: EdgeInsets.all(16.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: DataTable(
+                                  columnSpacing: 16.0,
+                                  dataRowHeight: 72.0,
+                                  columns: [
+                                    DataColumn(
+                                      label: Text('Service Title'),
+                                      tooltip: 'The title of the service',
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text('Service Description'),
+                                      tooltip: 'A description of the service',
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text('Price'),
+                                      tooltip: 'The price of the service',
+                                      numeric: true,
+                                    ),
+                                  ],
+                                  rows: rows,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+
+
                       Text("Appointments",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
                       SizedBox(height: 10,),
                       booking.length>0?
