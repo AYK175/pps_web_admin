@@ -5,25 +5,17 @@ import 'package:pps_web_admin/Screens/Doctors/new_doctor/new_doctor_screen.dart'
 import 'package:pps_web_admin/Screens/HomePage/home.dart';
 import 'package:pps_web_admin/Screens/chat_screen/chat_screen.dart';
 import 'package:pps_web_admin/Screens/users/user_screen.dart';
+
+import '../../Screens/clinics.dart';
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return   AnimatedContainer(
-      curve: Curves.easeInOutCubic,
-      duration: const Duration(milliseconds: 500),
-      width: 250 ,
-      margin: const EdgeInsets.only(bottom: 10, top: 10),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(10),
-          topRight: Radius.circular(10),
-        ),
-        color: Color.fromRGBO(20, 20, 20, 1),
-      ),
+    return   Expanded(
+      flex: 1,
       child: Container(
-        //color: Color.fromRGBO(26, 59, 106, 0.8745098039215686),
+        color: Color.fromRGBO(26, 59, 106, 0.8745098039215686),
         child: Column(
           children: [
             UserAccountsDrawerHeader(
@@ -38,7 +30,15 @@ class CustomDrawer extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                   )),
-
+              /*currentAccountPicture: CircleAvatar(
+              child: ClipOval(
+                child: Image.asset('android/Images/logo.png',
+                  fit: BoxFit.fitHeight,
+                  width: 110,
+                  height: 110,
+                ),
+              ),
+          ),*/
               decoration: BoxDecoration(
                 //color:Color.fromRGBO(26, 59, 106, 0.023529411764705882),
               ),
@@ -128,8 +128,12 @@ class CustomDrawer extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                   )),
-              onTap: () => null,
-            ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                      return MyTable(data: [],);
+                    }));
+              },),
             Divider(),
             ListTile(
               title: Text('Logout',

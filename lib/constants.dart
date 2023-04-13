@@ -7,6 +7,16 @@ import 'package:pps_web_admin/model/vet.dart';
 
 const kPrimaryColor = Color(0xDF1A3B6A);
 const kPrimaryLightColor = Color(0xFFE6E7FF);
+var kBackgroundColor = Color(0xffF9F9F9);
+var kWhiteColor = Color(0xffffffff);
+var kOrangeColor = Color(0xffEF716B);
+var kBlueColor = Color(0xff4B7FFB);
+var kYellowColor = Color(0xffFFB167);
+var kTitleTextColor = Color(0xff1E1C61);
+var kSearchBackgroundColor = Color(0xffF2F2F2);
+var kSearchTextColor = Color(0xffC0C0C0);
+var kCategoryTextColor = Color(0xff292685);
+var kCategoryTextColor2 = Color(0xd8010c41);
 
 const double defaultPadding = 16.0;
 
@@ -39,7 +49,7 @@ const double defaultPadding = 16.0;
     return doc;
 }
   Future<List<Vets>> fetchDoctors() async {
-    final questionsRef = FirebaseFirestore.instance.collection('vets').where("ProfileStatus", isEqualTo: "Approved");
+    final questionsRef = FirebaseFirestore.instance.collection('vets');
     final querySnapshot = await questionsRef.get();
     return querySnapshot.docs.map((doc) {
       final data = doc.data();
@@ -50,13 +60,12 @@ const double defaultPadding = 16.0;
         name: data["name"],
         phoneNumber: data["phone number"],
         profileImg: data["profileImg"],
-        profileStatus: data["profileStatus"],
+        profileStatus: data["ProfileStatus"],
         profileType: data["ProfileType"],
-        profileUnapprovalReason:data["profileUnapprovalReason"] ,
+        profileUnapprovalReason:data["ProfileUnapprovalReason"] ,
         qualification: data["qualification"],
         specialization: data["specialization"],
         uid: data["uid"],
-        price: data["price"],
         vetLiceance: data["VetLiceance"],
         year: data["year"],
       );
@@ -80,7 +89,6 @@ const double defaultPadding = 16.0;
         qualification: data["qualification"],
         specialization: data["specialization"],
         uid: data["uid"],
-        price: data["price"],
         vetLiceance: data["vetLiceance"],
         year: data["year"],
       );

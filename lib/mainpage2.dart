@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pps_web_admin/constants.dart';
+import 'package:pps_web_admin/pages/HomePageNew/HomePageNew.dart';
+import 'package:pps_web_admin/pages/home/home_page.dart';
 
 import 'Screens/HomePage/home.dart';
 import 'Screens/Login/login_screen.dart';
@@ -38,7 +40,7 @@ class _MainPageState extends State<MainPage> {
       body: StreamBuilder<User?>(stream: FirebaseAuth.instance.authStateChanges(),
       builder:(context, snapshot){
         if (snapshot.hasData) {
-          return HomePage();
+          return HomePageNew2();
         } else {
           return LoginScreen();
         }

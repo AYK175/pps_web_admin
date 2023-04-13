@@ -1,0 +1,4359 @@
+Index: lib/components/widget/custom_textfield.dart
+===================================================================
+diff --git a/lib/components/widget/custom_textfield.dart b/lib/components/widget/custom_textfield.dart
+deleted file mode 100644
+--- a/lib/components/widget/custom_textfield.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,44 +0,0 @@
+-import 'package:flutter/material.dart';
+-class CustomTextField extends StatelessWidget {
+-  String hint;
+-  bool obscure;
+-  Widget? prefix;
+-  bool? enableUrdu=false;
+-  Widget? suffix;
+-  TextEditingController? controller;
+-   CustomTextField({Key? key,required this.hint,
+-    required this.obscure,
+-     this.enableUrdu,
+-     this.controller,
+-     this.prefix,
+-     this.suffix}) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Padding(
+-      padding: const EdgeInsets.all(5.0),
+-      child: ListTile(
+-        title: Text(hint,textAlign:enableUrdu==true?TextAlign.right:TextAlign.left,style: TextStyle(fontFamily: "Nastaleeq"),),
+-        subtitle: Padding(
+-          padding: const EdgeInsets.only(top: 10.0),
+-          child: TextField(
+-            controller: controller,
+-            style: TextStyle(fontFamily: "Nastaleeq"),
+-            textAlign: enableUrdu==true?TextAlign.right:TextAlign.left,
+-            obscureText: obscure,
+-            cursorColor: Theme.of(context).primaryColor,
+-            decoration: InputDecoration(
+-              suffixIcon: suffix,
+-              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+-              hintTextDirection:enableUrdu==true?TextDirection.rtl:TextDirection.ltr,
+-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+-              prefixIcon: prefix,
+-              hintText: hint,
+-            ),
+-          ),
+-        ),
+-      ),
+-    );
+-  }
+-}
+-
+Index: lib/components/widget/dashboard_name.dart
+===================================================================
+diff --git a/lib/components/widget/dashboard_name.dart b/lib/components/widget/dashboard_name.dart
+deleted file mode 100644
+--- a/lib/components/widget/dashboard_name.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,22 +0,0 @@
+-import 'package:flutter/material.dart';
+-import 'package:flutter_screenutil/flutter_screenutil.dart';
+-class DashboardName extends StatelessWidget {
+-  String title;
+-  DashboardName({Key? key,required this.title}) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return  Card(
+-      shape: RoundedRectangleBorder(
+-          borderRadius: BorderRadius.circular(30)),
+-      child: Container(
+-          width: 0.8.sw,
+-          padding: REdgeInsets.only(left: 20.r, top: 10.r, bottom: 10.r),
+-          child: Text(
+-            title,
+-            style: TextStyle(
+-                fontSize: 20, fontWeight: FontWeight.bold),
+-          )),
+-    );
+-  }
+-}
+Index: lib/components/widget/drawer.dart
+===================================================================
+diff --git a/lib/components/widget/drawer.dart b/lib/components/widget/drawer.dart
+deleted file mode 100644
+--- a/lib/components/widget/drawer.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,154 +0,0 @@
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:pps_web_admin/Screens/Doctors/doctor_screen.dart';
+-import 'package:pps_web_admin/Screens/Doctors/new_doctor/new_doctor_screen.dart';
+-import 'package:pps_web_admin/Screens/HomePage/home.dart';
+-import 'package:pps_web_admin/Screens/chat_screen/chat_screen.dart';
+-import 'package:pps_web_admin/Screens/users/user_screen.dart';
+-
+-import '../../Screens/clinics.dart';
+-class CustomDrawer extends StatelessWidget {
+-  const CustomDrawer({Key? key}) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return   Expanded(
+-      flex: 1,
+-      child: Container(
+-        color: Color.fromRGBO(26, 59, 106, 0.8745098039215686),
+-        child: Column(
+-          children: [
+-            UserAccountsDrawerHeader(
+-              accountName: Text(
+-                  'Hi, '
+-                  // + user.email!
+-                  ,
+-                  style: TextStyle(
+-                    color: Colors.white,
+-                  )),
+-              accountEmail: Text('How is Your Pet Health?',
+-                  style: TextStyle(
+-                    color: Colors.white,
+-                  )),
+-              /*currentAccountPicture: CircleAvatar(
+-              child: ClipOval(
+-                child: Image.asset('android/Images/logo.png',
+-                  fit: BoxFit.fitHeight,
+-                  width: 110,
+-                  height: 110,
+-                ),
+-              ),
+-          ),*/
+-              decoration: BoxDecoration(
+-                //color:Color.fromRGBO(26, 59, 106, 0.023529411764705882),
+-              ),
+-            ),
+-            ListTile(
+-                leading: Icon(
+-                  Icons.home,
+-                  color: Colors.white,
+-                ),
+-                title: Text('Home',
+-                    style: TextStyle(
+-                      color: Colors.white,
+-                    )),
+-                onTap: () {
+-                  Navigator.push(context,
+-                      MaterialPageRoute(builder: (context) {
+-                        return HomePage();
+-                      }));
+-                }),
+-            ListTile(
+-                leading: Icon(
+-                  Icons.person,
+-                  color: Colors.white,
+-                ),
+-                title: Text('Users',
+-                    style: TextStyle(
+-                      color: Colors.white,
+-                    )),
+-                onTap: () {
+-                  Navigator.push(context,
+-                      MaterialPageRoute(builder: (context) {
+-                        return UserScreen();
+-                      }));
+-                }),
+-            ListTile(
+-                leading: Icon(
+-                  Icons.monitor_heart_outlined,
+-                  color: Colors.white,
+-                ),
+-                title: Text('Vets',
+-                    style: TextStyle(
+-                      color: Colors.white,
+-                    )),
+-                onTap: () {
+-                  Navigator.push(context,
+-                      MaterialPageRoute(builder: (context) {
+-                        return DoctorScreen();
+-                      }));
+-                }),
+-            ListTile(
+-                leading: Icon(
+-                  Icons.new_releases_rounded,
+-                  color: Colors.white,
+-                ),
+-                title: Text('New Vets',
+-                    style: TextStyle(
+-                      color: Colors.white,
+-                    )),
+-                onTap: () {
+-                  Navigator.push(context,
+-                      MaterialPageRoute(builder: (context) {
+-                        return NewDoctorScreen();
+-                      }));
+-                }),
+-            ListTile(
+-              leading: Icon(
+-                Icons.headset,
+-                color: Colors.white,
+-              ),
+-              title: Text('Contact and support',
+-                  style: TextStyle(
+-                    color: Colors.white,
+-                  )),
+-              onTap: () {
+-                Navigator.push(context,
+-                    MaterialPageRoute(builder: (context) {
+-                      return ChatScreen();
+-                    }));
+-              },
+-            ),
+-            ListTile(
+-              leading: Icon(
+-                Icons.settings,
+-                color: Colors.white,
+-              ),
+-              title: Text('Settings',
+-                  style: TextStyle(
+-                    color: Colors.white,
+-                  )),
+-              onTap: () {
+-            Navigator.push(context,
+-            MaterialPageRoute(builder: (context) {
+-            return MyTable(data: [],);
+-            }));
+-            },),
+-            Divider(),
+-            ListTile(
+-              title: Text('Logout',
+-                  style: TextStyle(
+-                    color: Colors.white,
+-                  )),
+-              leading: Icon(
+-                Icons.exit_to_app,
+-                color: Colors.white,
+-              ),
+-              onTap: () => FirebaseAuth.instance.signOut(),
+-            ),
+-          ],
+-        ),
+-      ),
+-    );
+-  }
+-}
+Index: lib/components/already_have_an_account_acheck.dart
+===================================================================
+diff --git a/lib/components/already_have_an_account_acheck.dart b/lib/components/already_have_an_account_acheck.dart
+deleted file mode 100644
+--- a/lib/components/already_have_an_account_acheck.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,36 +0,0 @@
+-import 'package:flutter/material.dart';
+-
+-import '../constants.dart';
+-
+-class AlreadyHaveAnAccountCheck extends StatelessWidget {
+-  final bool login;
+-  final Function? press;
+-  const AlreadyHaveAnAccountCheck({
+-    Key? key,
+-    this.login = true,
+-    required this.press,
+-  }) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Row(
+-      mainAxisAlignment: MainAxisAlignment.center,
+-      children: <Widget>[
+-        Text(
+-          login ? "Don’t have an Account ? " : "Already have an Account ? ",
+-          style: const TextStyle(color: kPrimaryColor),
+-        ),
+-        GestureDetector(
+-          onTap: press as void Function()?,
+-          child: Text(
+-            login ? "Sign Up" : "Sign In",
+-            style: const TextStyle(
+-              color: kPrimaryColor,
+-              fontWeight: FontWeight.bold,
+-            ),
+-          ),
+-        )
+-      ],
+-    );
+-  }
+-}
+Index: lib/components/background.dart
+===================================================================
+diff --git a/lib/components/background.dart b/lib/components/background.dart
+deleted file mode 100644
+--- a/lib/components/background.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,43 +0,0 @@
+-import 'package:flutter/material.dart';
+-
+-class Background extends StatelessWidget {
+-  final Widget child;
+-  const Background({
+-    Key? key,
+-    required this.child,
+-    this.topImage = "assets/images/main_top.png",
+-    this.bottomImage = "assets/images/login_bottom.png",
+-  }) : super(key: key);
+-
+-  final String topImage, bottomImage;
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Scaffold(
+-      resizeToAvoidBottomInset: false,
+-      body: Container(
+-        width: double.infinity,
+-        height: MediaQuery.of(context).size.height,
+-        child: Stack(
+-          alignment: Alignment.center,
+-          children: <Widget>[
+-            Positioned(
+-              top: 0,
+-              left: 0,
+-              child: Image.asset(
+-                topImage,
+-                width: 120,
+-              ),
+-            ),
+-            // Positioned(
+-            //   bottom: 0,
+-            //   right: 0,
+-            //   child: Image.asset(bottomImage, width: 120),
+-            // ),
+-            SafeArea(child: child),
+-          ],
+-        ),
+-      ),
+-    );
+-  }
+-}
+Index: lib/model/bookings.dart
+===================================================================
+diff --git a/lib/model/bookings.dart b/lib/model/bookings.dart
+deleted file mode 100644
+--- a/lib/model/bookings.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,52 +0,0 @@
+-class Bookings {
+-  String? userEmail;
+-  String? bookingEnd;
+-  String? userPhoneNumber;
+-  int? servicePrice;
+-  int? serviceDuration;
+-  String? bookingStart;
+-  String? serviceName;
+-  String? userId;
+-  String? serviceId;
+-  String? userName;
+-
+-  Bookings(
+-      {this.userEmail,
+-        this.bookingEnd,
+-        this.userPhoneNumber,
+-        this.servicePrice,
+-        this.serviceDuration,
+-        this.bookingStart,
+-        this.serviceName,
+-        this.userId,
+-        this.serviceId,
+-        this.userName});
+-
+-  Bookings.fromJson(Map<String, dynamic> json) {
+-    userEmail = json['userEmail'];
+-    bookingEnd = json['bookingEnd'];
+-    userPhoneNumber = json['userPhoneNumber'];
+-    servicePrice = json['servicePrice'];
+-    serviceDuration = json['serviceDuration'];
+-    bookingStart = json['bookingStart'];
+-    serviceName = json['serviceName'];
+-    userId = json['userId'];
+-    serviceId = json['serviceId'];
+-    userName = json['userName'];
+-  }
+-
+-  Map<String, dynamic> toJson() {
+-    final Map<String, dynamic> data = <String, dynamic>{};
+-    data['userEmail'] = userEmail;
+-    data['bookingEnd'] = bookingEnd;
+-    data['userPhoneNumber'] = userPhoneNumber;
+-    data['servicePrice'] = servicePrice;
+-    data['serviceDuration'] = serviceDuration;
+-    data['bookingStart'] = bookingStart;
+-    data['serviceName'] = serviceName;
+-    data['userId'] = userId;
+-    data['serviceId'] = serviceId;
+-    data['userName'] = userName;
+-    return data;
+-  }
+-}
+\ No newline at end of file
+Index: lib/model/users_model.dart
+===================================================================
+diff --git a/lib/model/users_model.dart b/lib/model/users_model.dart
+deleted file mode 100644
+--- a/lib/model/users_model.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,44 +0,0 @@
+-class Users {
+-  String? cNIC;
+-  String? email;
+-  String? firstname;
+-  String? lastname;
+-  String? phnumber;
+-  String? profileImg;
+-  String? uid;
+-  int? wallet;
+-
+-  Users(
+-      {this.cNIC,
+-        this.email,
+-        this.firstname,
+-        this.lastname,
+-        this.phnumber,
+-        this.profileImg,
+-        this.uid,
+-        this.wallet});
+-
+-  Users.fromJson(Map<String, dynamic> json) {
+-    cNIC = json['CNIC'];
+-    email = json['email'];
+-    firstname = json['firstname'];
+-    lastname = json['lastname'];
+-    phnumber = json['phnumber'];
+-    profileImg = json['profileImg'];
+-    uid = json['uid'];
+-    wallet = json['wallet'];
+-  }
+-
+-  Map<String, dynamic> toJson() {
+-    final Map<String, dynamic> data = Map<String, dynamic>();
+-    data['CNIC'] = cNIC;
+-    data['email'] = email;
+-    data['firstname'] = firstname;
+-    data['lastname'] = lastname;
+-    data['phnumber'] = phnumber;
+-    data['profileImg'] = profileImg;
+-    data['uid'] = uid;
+-    data['wallet'] = wallet;
+-    return data;
+-  }
+-}
+Index: lib/model/vet.dart
+===================================================================
+diff --git a/lib/model/vet.dart b/lib/model/vet.dart
+deleted file mode 100644
+--- a/lib/model/vet.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,72 +0,0 @@
+-class Vets {
+-  String? profileStatus;
+-  String? profileType;
+-  String? profileUnapprovalReason;
+-  String? vetLiceance;
+-  String? cnic;
+-  String? description;
+-  String? email;
+-  String? name;
+-  String? phoneNumber;
+-  String? profileImg;
+-  String? qualification;
+-  String? specialization;
+-  String? uid;
+-  String? year;
+-  String? price;
+-
+-  Vets(
+-      {this.profileStatus,
+-        this.profileType,
+-        this.profileUnapprovalReason,
+-        this.vetLiceance,
+-        this.cnic,
+-        this.description,
+-        this.email,
+-        this.name,
+-        this.phoneNumber,
+-        this.profileImg,
+-        this.qualification,
+-        this.specialization,
+-        this.uid,
+-        this.price,
+-        this.year});
+-
+-  Vets.fromJson(Map<String, dynamic> json) {
+-    profileStatus = json['ProfileStatus'];
+-    profileType = json['ProfileType'];
+-    profileUnapprovalReason = json['ProfileUnapprovalReason'];
+-    vetLiceance = json['VetLiceance'];
+-    cnic = json['cnic'];
+-    description = json['description'];
+-    email = json['email'];
+-    price = json['price'];
+-    name = json['name'];
+-    phoneNumber = json['phone number'];
+-    profileImg = json['profileImg'];
+-    qualification = json['qualification'];
+-    specialization = json['specialization'];
+-    uid = json['uid'];
+-    year = json['year'];
+-  }
+-
+-  Map<String, dynamic> toJson() {
+-    final Map<String, dynamic> data =  <String, dynamic>{};
+-    data['ProfileStatus'] = profileStatus;
+-    data['ProfileType'] = profileType;
+-    data['ProfileUnapprovalReason'] = profileUnapprovalReason;
+-    data['VetLiceance'] = vetLiceance;
+-    data['cnic'] = cnic;
+-    data['description'] = description;
+-    data['email'] = email;
+-    data['name'] = name;
+-    data['phone number'] = phoneNumber;
+-    data['profileImg'] = profileImg;
+-    data['qualification'] = qualification;
+-    data['specialization'] = specialization;
+-    data['uid'] = uid;
+-    data['year'] = year;
+-    data['price'] = price;
+-    return data;
+-  }
+-}
+\ No newline at end of file
+Index: lib/Screens/chat_screen/chat_screen.dart
+===================================================================
+diff --git a/lib/Screens/chat_screen/chat_screen.dart b/lib/Screens/chat_screen/chat_screen.dart
+deleted file mode 100644
+--- a/lib/Screens/chat_screen/chat_screen.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,145 +0,0 @@
+-import 'package:flutter/material.dart';
+-import 'package:cloud_firestore/cloud_firestore.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter_screenutil/flutter_screenutil.dart';
+-import 'package:pps_web_admin/components/widget/drawer.dart';
+-
+-class ChatScreen extends StatefulWidget {
+-  @override
+-  _ChatScreenState createState() => _ChatScreenState();
+-}
+-
+-class _ChatScreenState extends State<ChatScreen> {
+-  final TextEditingController _textController = TextEditingController();
+-  final FirebaseAuth _auth = FirebaseAuth.instance;
+-  late User _user;
+-
+-  @override
+-  void initState() {
+-    super.initState();
+-    _user = _auth.currentUser!;
+-  }
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Scaffold(
+-      body: Row(
+-        children: [
+-          CustomDrawer(),
+-          SizedBox(
+-            width: 0.02.sw,
+-          ),
+-          Expanded(
+-            flex: 5,
+-            child: Column(
+-              children: <Widget>[
+-                Expanded(
+-                  child: StreamBuilder<QuerySnapshot>(
+-                    stream: FirebaseFirestore.instance
+-                        .collection('chats')
+-                        .orderBy('createdAt')
+-                        .snapshots(),
+-                    builder: (context, snapshot) {
+-                      if (!snapshot.hasData) {
+-                        return Center(
+-                          child: CircularProgressIndicator(),
+-                        );
+-                      } else {
+-                        List<DocumentSnapshot> docs = snapshot.data!.docs;
+-                        List<Widget> messages = docs
+-                            .map((doc) => Message(
+-                          from: doc['from'],
+-                          text: doc['text'],
+-                          me: _user.uid == doc['from'],
+-                        ))
+-                            .toList();
+-                        return ListView(
+-                          children: <Widget>[
+-                            ...messages,
+-                          ],
+-                        );
+-                      }
+-                    },
+-                  ),
+-                ),
+-                Container(
+-                  child: Row(
+-                    children: <Widget>[
+-                      Expanded(
+-                        child: TextField(
+-                          controller: _textController,
+-                          decoration: InputDecoration(
+-                            hintText: 'Enter message',
+-                          ),
+-                        ),
+-                      ),
+-                      IconButton(
+-                        icon: Icon(Icons.send),
+-                        onPressed: () async {
+-                          await FirebaseFirestore.instance.collection('chats').add({
+-                            'text': _textController.text.trim(),
+-                            'createdAt': DateTime.now().toIso8601String(),
+-                            'from': _user.uid,
+-                          });
+-                          _textController.clear();
+-                        },
+-                      ),
+-                    ],
+-                  ),
+-                ),
+-              ],
+-            ),
+-          ),
+-        ],
+-      ),
+-    );
+-  }
+-}
+-class Message extends StatelessWidget {
+-  Message({required this.from, required this.text, required this.me});
+-
+-  final String from;
+-  final String text;
+-  final bool me;
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Container(
+-      margin: EdgeInsets.symmetric(vertical: 10.0),
+-      child: Row(
+-        crossAxisAlignment:
+-        me ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+-        children: <Widget>[
+-          !me
+-              ? CircleAvatar(
+-            child: Text(from.substring(0, 1)),
+-          )
+-              : Container(),
+-          Expanded(
+-            child: Column(
+-              crossAxisAlignment:
+-              me ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+-              children: <Widget>[
+-                // Text(
+-                //   from,
+-                //   style: TextStyle(
+-                //     fontWeight: FontWeight.bold,
+-                //   ),
+-                // ),
+-                Container(
+-                  margin:EdgeInsets.only(top: 5.0,left:me ?0: 5,right: me?5:0),
+-                  child: Text(text),
+-                ),
+-              ],
+-            ),
+-          ),
+-          me
+-              ? CircleAvatar(
+-            child: Text(from.substring(0, 1)),
+-          )
+-              : Container(),
+-        ],
+-      ),
+-    );
+-  }
+-}
+Index: lib/Screens/Doctors/doctor_view_profile/view_profile_screen.dart
+===================================================================
+diff --git a/lib/Screens/Doctors/doctor_view_profile/view_profile_screen.dart b/lib/Screens/Doctors/doctor_view_profile/view_profile_screen.dart
+deleted file mode 100644
+--- a/lib/Screens/Doctors/doctor_view_profile/view_profile_screen.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,281 +0,0 @@
+-import 'package:cloud_firestore/cloud_firestore.dart';
+-import 'package:easy_sidemenu/easy_sidemenu.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:flutter_screenutil/flutter_screenutil.dart';
+-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+-import 'package:pps_web_admin/Screens/Doctors/doctors_edit_screen/doctors_edit_screen.dart';
+-import 'package:pps_web_admin/Screens/HomePage/home.dart';
+-import 'package:pps_web_admin/components/widget/dashboard_name.dart';
+-import 'package:pps_web_admin/components/widget/drawer.dart';
+-import 'package:pps_web_admin/constants.dart';
+-import 'package:pps_web_admin/model/bookings.dart';
+-import 'package:pps_web_admin/model/users_model.dart';
+-import 'package:pps_web_admin/model/vet.dart';
+-import 'package:syncfusion_flutter_charts/charts.dart';
+-
+-
+-class ViewDoctorScreen extends StatefulWidget {
+-  Vets vets;
+-  ViewDoctorScreen({Key? key,required this.vets}) : super(key: key);
+-
+-  @override
+-  _ViewDoctorScreenState createState() => _ViewDoctorScreenState();
+-}
+-
+-class _ViewDoctorScreenState extends State<ViewDoctorScreen> {
+-  // final user= FirebaseAuth.instance.currentUser!;
+-  List<Bookings> booking=[];
+-  List<Users> user=[];
+-  late Stream<QuerySnapshot> _clinicsStream;
+-
+-  @override
+-  void initState() {
+-    setState(() {
+-      booking =
+-          bookingList.where((booking) => booking.serviceId == widget.vets.uid).toList();
+-      booking.forEach((element) {
+-        user.add(userList.where((user) => user.uid == element.userId).toList().first);
+-      });
+-      print(booking);
+-      _clinicsStream = FirebaseFirestore.instance
+-          .collection('Clinics')
+-          .where('vetids', isEqualTo: widget.vets.uid)
+-          .snapshots();
+-    });
+-    super.initState();
+-  }
+-  @override
+-  Widget build(BuildContext context) {
+-    return Scaffold(
+-        body: Row(
+-          children: [
+-            CustomDrawer(),
+-            SizedBox(
+-              width: 0.02.sw,
+-            ),
+-            Expanded(
+-              flex: 5,
+-              child: ListView(
+-                children: [
+-                  DashboardName(title: "Doctors Dashboard",),
+-                  Expanded(
+-                    child: Column(children: [
+-                      Container(width: 200,height: 200,decoration: BoxDecoration(
+-                          image: DecorationImage(image: NetworkImage(widget.vets.profileImg.toString()),fit: BoxFit.cover),
+-                          color: Colors.red,
+-                          borderRadius: BorderRadius.circular(20)
+-                      ),),
+-                      Padding(
+-                        padding: REdgeInsets.only(left: 20.0,right: 40),
+-                        child: ListTile(
+-                          title: Text("${widget.vets.name.toString()}\n",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,)),
+-                          trailing:Text("${widget.vets.email.toString()}",style: TextStyle(fontSize: 18),),
+-                        ),
+-                      ),
+-                      Padding(
+-                        padding: REdgeInsets.only(left: 20.0,right: 40),
+-                        child: ListTile(title: Text("\nDescription\n",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,),),
+-                        subtitle: Text(widget.vets.description.toString(),style: TextStyle(fontSize: 18),),
+-                        ),
+-                      ),
+-                      Padding(
+-                        padding: REdgeInsets.only(left: 20.0,right: 40),
+-                        child: ListTile(title: Text("Profile Type\n",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,),),
+-                          trailing: Text(widget.vets.profileType.toString(),style: TextStyle(fontSize: 18),),
+-                        ),
+-                      ),
+-                      Padding(
+-                        padding: REdgeInsets.only(left: 20.0,right: 40),
+-                        child: ListTile(title: Text("Vet Licence\n",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,),),
+-                          trailing: Text(widget.vets.vetLiceance.toString(),style: TextStyle(fontSize: 18),),
+-                        ),
+-                      ),
+-                      Padding(
+-                        padding: REdgeInsets.only(left: 20.0,right: 40),
+-                        child: ListTile(title: Text("Vet Cnic\n",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,),),
+-                          trailing: Text(widget.vets.cnic.toString(),style: TextStyle(fontSize: 18),),
+-                        ),
+-                      ),
+-                      Padding(
+-                        padding: REdgeInsets.only(left: 20.0,right: 40),
+-                        child: ListTile(title: Text("Vet Phone Number\n",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,),),
+-                          trailing: Text(widget.vets.phoneNumber.toString(),style: TextStyle(fontSize: 18),),
+-                        ),
+-                      ),
+-
+-    Padding(
+-      padding: const EdgeInsets.all(8.0),
+-      child: StreamBuilder<QuerySnapshot>(
+-      stream: _clinicsStream,
+-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+-      if (!snapshot.hasData) {
+-      return CircularProgressIndicator();
+-      }
+-
+-      List<DataRow> rows = [];
+-      snapshot.data!.docs.forEach((clinic) {
+-      String clinicName = clinic['clinicName'];
+-      String clinicAddress = clinic['clinicAddress'];
+-      String timeSlotDuration = clinic['timeSlotDuration'];
+-      String startTime = clinic['startTime'];
+-      String endTime = clinic['endTime'];
+-      List<String> selectedDays = List<String>.from(clinic['selectedDays']);
+-
+-      rows.add(DataRow(cells: [
+-      DataCell(Text(clinicName)),
+-      DataCell(Text(clinicAddress)),
+-      DataCell(Text(timeSlotDuration)),
+-      DataCell(Text(startTime)),
+-      DataCell(Text(endTime)),
+-      DataCell(Text(selectedDays.join(', '))),
+-        DataCell(InkWell(
+-
+-            child: Text("Edit",style: TextStyle(color: Colors.blue),)),),
+-
+-      ]));
+-      });
+-
+-      return DataTable(
+-      columns: [
+-      DataColumn(label: Text('Clinic Name')),
+-      DataColumn(label: Text('Clinic Address')),
+-      DataColumn(label: Text('Time Slot Duration')),
+-      DataColumn(label: Text('Start Time')),
+-      DataColumn(label: Text('End Time')),
+-      DataColumn(label: Text('Selected Days')),
+-        DataColumn(label: Text('Services')),
+-
+-      ],
+-      rows: rows,
+-      );
+-      },
+-      ),
+-    ),
+-                      Text("Appointments",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+-                      SizedBox(height: 10,),
+-                      booking.length>0?
+-
+-                      Padding(
+-                        padding: const EdgeInsets.all(8.0),
+-                        child: Table(
+-                          children: [
+-                            TableRow(
+-                              children: [
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Sr No.',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('User Name.',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Email',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Appointment Status',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Fee',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Date',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Time',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Change',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                              ],
+-                              decoration: BoxDecoration(color: Colors.grey.shade300),
+-                            ),
+-                            for(int i=0;i<booking.length;i++)
+-                              TableRow(
+-                                children: [
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text(i.toString())),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text(user[i].lastname.toString())),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text(user[i].email.toString())),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text(booking[i].userName.toString(),style: TextStyle(color:booking[i].userName.toString()=="Canceled"?Colors.red:booking[i].userName.toString()=="Completed"?Colors.green:Colors.blue ),)),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text(booking[i].servicePrice.toString())),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text("${DateTime.tryParse(booking[i].bookingStart.toString())!.day}/${DateTime.tryParse(booking[i].bookingStart.toString())!.month}/${DateTime.tryParse(booking[i].bookingStart.toString())!.year}")),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text("${DateTime.tryParse(booking[i].bookingStart.toString())!.hour}:${DateTime.tryParse(booking[i].bookingStart.toString())!.minute==0?"00":DateTime.tryParse(booking[i].bookingStart.toString())!.minute}")),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: TextButton(onPressed: (){
+-                                    },child: Text("Edit",style: TextStyle(color: Colors.blue),),),
+-                                  ),
+-                                ],
+-                                decoration: BoxDecoration(color: Colors.grey.shade300),
+-                              ),
+-                          ],
+-                        ),
+-                      ):
+-                      Container(),
+-                    ],),
+-                  ),
+-                ],
+-              ),
+-            ),
+-          ],
+-        ));
+-  }
+-
+-}
+Index: lib/Screens/Doctors/doctors_edit_screen/doctors_edit_screen.dart
+===================================================================
+diff --git a/lib/Screens/Doctors/doctors_edit_screen/doctors_edit_screen.dart b/lib/Screens/Doctors/doctors_edit_screen/doctors_edit_screen.dart
+deleted file mode 100644
+--- a/lib/Screens/Doctors/doctors_edit_screen/doctors_edit_screen.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,139 +0,0 @@
+-import 'package:cloud_firestore/cloud_firestore.dart';
+-import 'package:flutter/material.dart';
+-import 'package:flutter_screenutil/flutter_screenutil.dart';
+-import 'package:pps_web_admin/Screens/Doctors/doctor_screen.dart';
+-import 'package:pps_web_admin/components/widget/custom_textfield.dart';
+-import 'package:pps_web_admin/components/widget/dashboard_name.dart';
+-import 'package:pps_web_admin/components/widget/drawer.dart';
+-import 'package:pps_web_admin/constants.dart';
+-import 'package:pps_web_admin/model/users_model.dart';
+-import 'package:pps_web_admin/model/vet.dart';
+-
+-class DoctorEditScreen extends StatefulWidget {
+-  Vets vets;
+-   DoctorEditScreen({Key? key,required this.vets}) : super(key: key);
+-
+-  @override
+-  State<DoctorEditScreen> createState() => _DoctorEditScreenState();
+-}
+-
+-class _DoctorEditScreenState extends State<DoctorEditScreen> {
+-  late TextEditingController name;
+-  late TextEditingController profileStatus;
+-  late TextEditingController profileType;
+-  late TextEditingController profileUnapprovalReason;
+-  late TextEditingController vetLiceance;
+-  late TextEditingController cnic;
+-  late TextEditingController email;
+-  late TextEditingController phoneNumber;
+-  late TextEditingController profileImg;
+-  late TextEditingController qualification;
+-  late TextEditingController specialization;
+-  late TextEditingController year;
+-  late TextEditingController price;
+-  @override
+-  void initState() {
+-
+-    setState(() {
+-      name=TextEditingController(text: widget.vets.name);
+-      profileStatus=TextEditingController(text: widget.vets.profileStatus);
+-      profileType=TextEditingController(text: widget.vets.profileType);
+-      profileUnapprovalReason=TextEditingController(text: widget.vets.profileUnapprovalReason);
+-      vetLiceance=TextEditingController(text: widget.vets.vetLiceance);
+-      cnic=TextEditingController(text: widget.vets.cnic);
+-      email=TextEditingController(text: widget.vets.email);
+-      phoneNumber=TextEditingController(text: widget.vets.phoneNumber);
+-      qualification=TextEditingController(text: widget.vets.qualification);
+-      specialization=TextEditingController(text: widget.vets.specialization);
+-      year=TextEditingController(text: widget.vets.year);
+-      price=TextEditingController(text: widget.vets.price);
+-    });
+-    super.initState();
+-  }
+-  @override
+-  Widget build(BuildContext context) {
+-    return Scaffold(
+-      body: Row(
+-        children: [
+-          CustomDrawer(),
+-          SizedBox(
+-            width: 0.02.sw,
+-          ),
+-          Expanded(
+-              flex: 5,
+-              child: Column(
+-                children: [
+-              DashboardName(title: "Edit Doctors",),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "Name",controller: name,)),
+-              Expanded(child: CustomTextField(obscure: false,hint: "profile Status",controller: profileStatus,))
+-            ],),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "profile Type",controller: profileType,)),
+-              Expanded(child: CustomTextField(obscure: false,hint: "profile Unapproval Reason",controller: profileUnapprovalReason,))
+-            ],),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "vet Liceance",controller: vetLiceance,)),
+-              Expanded(child: CustomTextField(obscure: false,hint: "C N I C",controller: cnic,))
+-            ],),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "Price",controller: price,)),
+-              Expanded(child: CustomTextField(obscure: false,hint: "Email",controller: email,))
+-            ],),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "Phone Number",controller: phoneNumber,)),
+-              Expanded(child: CustomTextField(obscure: false,hint: "qualification",controller: qualification,))
+-            ],),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "Specialization",controller: specialization,)),
+-              Expanded(child: CustomTextField(obscure: false,hint: "Year",controller: year,))
+-            ],),
+-                  Padding(
+-                    padding: REdgeInsets.only(left: 20,right:20,top: 20),
+-                    child: ElevatedButton(
+-                      style: ButtonStyle(
+-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+-                              RoundedRectangleBorder(
+-                                borderRadius: BorderRadius.circular(8.0),
+-                              )
+-                          )
+-                      ),
+-                      onPressed: () async {
+-                        Vets vets=Vets(
+-                          cnic: cnic.text,
+-                          description: widget.vets.description,
+-                          email: email.text,
+-                          name: name.text,
+-                          phoneNumber: phoneNumber.text,
+-                          profileImg: widget.vets.profileImg,
+-                          profileStatus: profileStatus.text,
+-                          profileType: profileType.text,
+-                          profileUnapprovalReason:profileUnapprovalReason.text,
+-                          qualification:qualification.text,
+-                          specialization: specialization.text,
+-                          uid: widget.vets.uid,
+-                          price: price.text,
+-                          vetLiceance: vetLiceance.text,
+-                          year: year.text,
+-                        );
+-                        FirebaseFirestore.instance.collection("vets").doc(widget.vets.uid).update(vets.toJson());
+-                        await getValue();
+-                        Navigator.push(context,
+-                            MaterialPageRoute(builder: (context) {
+-                              return DoctorScreen();
+-                            }));
+-                      }, child: Text("Edit Profile"),
+-                    ),
+-                  ),
+-          ],)),
+-        ],
+-      )
+-    );
+-  }
+-  getValue() async {
+-    vetList   =await fetchDoctors();
+-    newVetList   =await fetchNewDoctors();
+-    setState(() {});
+-    print(userList);
+-  }
+-}
+Index: lib/Screens/Doctors/new_doctor/new_doctor_screen.dart
+===================================================================
+diff --git a/lib/Screens/Doctors/new_doctor/new_doctor_screen.dart b/lib/Screens/Doctors/new_doctor/new_doctor_screen.dart
+deleted file mode 100644
+--- a/lib/Screens/Doctors/new_doctor/new_doctor_screen.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,184 +0,0 @@
+-import 'package:cloud_firestore/cloud_firestore.dart';
+-import 'package:easy_sidemenu/easy_sidemenu.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:flutter_screenutil/flutter_screenutil.dart';
+-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+-import 'package:pps_web_admin/Screens/Doctors/doctors_edit_screen/doctors_edit_screen.dart';
+-import 'package:pps_web_admin/Screens/HomePage/home.dart';
+-import 'package:pps_web_admin/components/widget/dashboard_name.dart';
+-import 'package:pps_web_admin/components/widget/drawer.dart';
+-import 'package:pps_web_admin/constants.dart';
+-import 'package:pps_web_admin/model/vet.dart';
+-import 'package:syncfusion_flutter_charts/charts.dart';
+-
+-
+-class NewDoctorScreen extends StatefulWidget {
+-  NewDoctorScreen({Key? key}) : super(key: key);
+-
+-  @override
+-  _DoctorScreenState createState() => _DoctorScreenState();
+-}
+-
+-class _DoctorScreenState extends State<NewDoctorScreen> {
+-  // final user= FirebaseAuth.instance.currentUser!;
+-  @override
+-  Widget build(BuildContext context) {
+-    return Scaffold(
+-        body: Row(
+-          children: [
+-            CustomDrawer(),
+-            SizedBox(
+-              width: 0.02.sw,
+-            ),
+-            Expanded(
+-              flex: 5,
+-              child: Column(
+-                children: [
+-                  DashboardName(title: "New Doctors",),
+-                  Expanded(
+-                    child: newVetList.length>0?GridView.builder(
+-                      padding: REdgeInsets.all(10),
+-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+-                          crossAxisSpacing: 10,
+-                          mainAxisSpacing: 10,
+-                          crossAxisCount: 3),
+-                      itemBuilder: (context, index) {
+-                        return Card(
+-                          elevation: 8,
+-                          shape: RoundedRectangleBorder(
+-                              borderRadius: BorderRadius.circular(10)),
+-                          child: Stack(
+-                            children: [
+-                              _StackBgCard(),
+-                              Column(
+-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+-                                children: [
+-                                  _doctorsProfile(index: index),
+-                                  _doctorStats(index: index),
+-                                  Container(
+-                                    height: 0.1.sh,
+-                                    margin: REdgeInsets.all(10),
+-                                    child: Row(
+-                                      children: [
+-                                        Expanded(
+-                                          child: ElevatedButton(
+-                                            style: ButtonStyle(
+-                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+-                                                    RoundedRectangleBorder(
+-                                                      borderRadius: BorderRadius.circular(8.0),
+-                                                    )
+-                                                ),
+-                                                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green)
+-                                            ),
+-                                            onPressed: () async {
+-                                                  FirebaseFirestore.instance.collection("vets").doc(newVetList[index].uid).update({"ProfileStatus":"Approved"});
+-                                                  vetList.clear();
+-                                                  newVetList.clear();
+-                                                  await getValue();
+-                                                  setState(() {});
+-                                            }, child: Text("Approve"),
+-                                          ),
+-                                        ),
+-                                        SizedBox(width: 10,),
+-                                        Expanded(
+-                                          child: ElevatedButton(
+-                                            style: ButtonStyle(
+-                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+-                                                    RoundedRectangleBorder(
+-                                                      borderRadius: BorderRadius.circular(8.0),
+-                                                    ),
+-                                                ),
+-                                              backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red)
+-                                            ),
+-                                            onPressed: () async {
+-                                              FirebaseFirestore.instance.collection("vets").doc(newVetList[index].uid).update({"ProfileStatus":"Not Approved"});
+-                                              setState(() {});
+-                                              await getValue();
+-                                              setState(() {});
+-                                            }, child: Text("Not Approve"),
+-                                          ),
+-                                        ),
+-                                      ],
+-                                    ),
+-                                  ),
+-                                ],
+-                              ),
+-                            ],
+-                          ),
+-                        );
+-                      },
+-                      itemCount: newVetList.length,
+-                    ):Center(child: Text("No Vet To Show",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),), ),
+-                  ),
+-                ],
+-              ),
+-            ),
+-          ],
+-        ));
+-  }
+-  getValue() async {
+-    vetList   =await fetchDoctors();
+-    newVetList   =await fetchNewDoctors();
+-    setState(() {});
+-    print(userList);
+-  }
+-  Widget _StackBgCard() => Column(
+-    children: [
+-      Expanded(
+-          child: Container(
+-            decoration: BoxDecoration(
+-                image: DecorationImage(
+-                    image: AssetImage("assets/images/doctor.jpg"),
+-                    fit: BoxFit.cover)),
+-            child: Container(
+-              color: Colors.blue.withOpacity(0.5),
+-            ),
+-          )),
+-      Expanded(
+-          child: Container(
+-            color: Colors.white,
+-          )),
+-    ],
+-  );
+-
+-
+-
+-  Widget _doctorsProfile({required int index})=>  Card(
+-    margin: REdgeInsets.all(10),
+-    color: Colors.white,
+-    child: ListTile(
+-      contentPadding: REdgeInsets.all(10),
+-      visualDensity: const VisualDensity(vertical: 4),
+-      leading: Container(
+-        width: 100,
+-        height: 100,
+-        decoration: BoxDecoration(
+-            borderRadius: BorderRadius.circular(10),
+-            image: DecorationImage(
+-                image: NetworkImage(newVetList[index]
+-                    .profileImg
+-                    .toString()),fit: BoxFit.cover)),
+-      ),
+-      title: Text(newVetList[index].name.toString()),
+-      subtitle: Text(newVetList[index].email.toString()),
+-    ),
+-  );
+-
+-
+-
+-  Widget _doctorStats({required int index})=> Container(
+-    height: 0.1.sh,
+-    margin: REdgeInsets.all(10),
+-    child: Row(
+-      crossAxisAlignment: CrossAxisAlignment.center,
+-      children: [
+-        Expanded(child: Card(child: Center(child: ListTile(title: Text(newVetList[index].year.toString()),subtitle: Text("Doctors Experience"),),),)),
+-        SizedBox(width:10,),
+-        Expanded(child: Card(child: Center(child: ListTile(title: Text(newVetList[index].qualification.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("Doctors Qualification"),),),)),
+-        SizedBox(width:10,),
+-        Expanded(child: Card(child: Center(child: ListTile(title: Text(newVetList[index].price.toString()),subtitle: Text("Doctors Services"),),),)),
+-      ],),
+-  );
+-
+-}
+Index: lib/Screens/Doctors/detailsnew.dart
+===================================================================
+diff --git a/lib/Screens/Doctors/detailsnew.dart b/lib/Screens/Doctors/detailsnew.dart
+deleted file mode 100644
+--- a/lib/Screens/Doctors/detailsnew.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,359 +0,0 @@
+-import 'package:cloud_firestore/cloud_firestore.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:cloud_firestore/cloud_firestore.dart';
+-import 'package:flutter/material.dart';
+-
+-import '../HomePage/home.dart';
+-import 'item_list.dart';
+-
+-
+-class ItemDetails extends StatelessWidget {
+-ItemDetails(this.itemId, {Key? key}) : super(key: key) {
+-_reference =
+-FirebaseFirestore.instance.collection('vets').doc(itemId);
+-_futureData = _reference.get();
+-}
+-
+-String itemId;
+-late DocumentReference _reference;
+-
+-//_reference.get()  --> returns Future<DocumentSnapshot>
+-//_reference.snapshots() --> Stream<DocumentSnapshot>
+-late Future<DocumentSnapshot> _futureData;
+-late Map data;
+-
+-@override
+-Widget build(BuildContext context) {
+-  double width = MediaQuery.of(context).size.width;
+-  double height = MediaQuery.of(context).size.height;
+-
+-  return Scaffold(
+-    appBar: AppBar(
+-    title: Text("",style: TextStyle(color: Color.fromRGBO(
+-      214, 217, 220, 1.0), fontSize: 15),),
+-
+-  centerTitle: true,
+-  backgroundColor: Color.fromRGBO(26, 59, 106, 1.0),
+-  elevation: 0,
+-  leading: GestureDetector(
+-  /*onTap: (){
+-  Navigator.push(
+-  context,
+-  MaterialPageRoute(
+-  builder: (context)
+-  {
+-  return  HomePage();
+-  }
+-  )
+-  );
+-  },
+-    child: Icon(
+-      Icons.arrow_back_sharp,  // add custom icons also
+-    ),
+-*/
+-  )
+-    ),
+-  body: FutureBuilder<DocumentSnapshot>(
+-    future: _futureData,
+-    builder: (BuildContext context, AsyncSnapshot snapshot) {
+-      if (snapshot.hasError) {
+-        return Center(child: Text('Some error occurred. ${snapshot.error}'));
+-      }
+-
+-      if (snapshot.hasData) {
+-        //Get the data
+-        DocumentSnapshot documentSnapshot = snapshot.data;
+-        data = documentSnapshot.data() as Map;
+-          var status= data['ProfileStatus'];
+-        //display the data
+-        return Container(
+-          width: width,
+-          height: height,
+-          child: Row(
+-            children: [
+-              Drawer(
+-                backgroundColor: Color.fromRGBO(26, 59, 106, 0.8745098039215686),
+-
+-                child: ListView(
+-
+-                  // Remove padding
+-                  padding: EdgeInsets.zero,
+-                  children: [
+-
+-                    UserAccountsDrawerHeader(
+-                      accountName: Text('',style: TextStyle(
+-                        color: Colors.white,
+-                      )),
+-                      accountEmail: Text('' ,style: TextStyle(
+-                        color: Colors.white,
+-                      )),
+-                      /*currentAccountPicture: CircleAvatar(
+-                  child: ClipOval(
+-                    child: Image.asset('android/Images/logo.png',
+-                      fit: BoxFit.fitHeight,
+-                      width: 110,
+-                      height: 110,
+-                    ),
+-                  ),
+-                ),*/
+-                      decoration: BoxDecoration(
+-                        //color:Color.fromRGBO(26, 59, 106, 0.023529411764705882),
+-                      ),
+-                    ),
+-                    ListTile(
+-                        leading: Icon(Icons.home,color: Colors.white,),
+-                        title: Text('Home',style: TextStyle(
+-                          color: Colors.white,
+-                        )),
+-                        onTap: () {
+-                          Navigator.push(
+-                              context,
+-                              MaterialPageRoute(
+-                                  builder: (context) {
+-                                    return HomePage();
+-                                  }
+-                              )
+-                          );
+-                        }
+-                    ),
+-
+-                    ListTile(
+-                        leading: Icon(Icons.person,color: Colors.white,),
+-                        title: Text('Vets',style: TextStyle(
+-                          color: Colors.white,
+-                        )),
+-                        onTap: () {
+-                          Navigator.push(
+-                              context,
+-                              MaterialPageRoute(
+-                                  builder: (context) {
+-                                    return ItemList();
+-                                  }
+-                              )
+-                          );
+-                        }
+-                    ),
+-                    ListTile(
+-                      leading: Icon(Icons.settings,color: Colors.white,),
+-                      title: Text('Settings',style: TextStyle(
+-                        color: Colors.white,
+-                      )),
+-                      onTap: () => null,
+-                    ),
+-                    Divider(),
+-                    ListTile(
+-                      title: Text('Logout',style: TextStyle(
+-                        color: Colors.white,
+-                      )),
+-                      leading: Icon(Icons.exit_to_app,color: Colors.white,),
+-                      onTap: () => FirebaseAuth.instance.signOut(),
+-                    ),
+-                  ],
+-                ),
+-              ),
+-
+-              Center(
+-                child: Padding(
+-                  padding: const EdgeInsets.only(left:13),
+-                  child: Container(
+-                    width: width*0.72,
+-                    child: Stack(
+-                      fit: StackFit.expand,
+-                      children: [
+-                        Container(
+-                          color: Color.fromRGBO(26, 59, 106, 1.0),
+-                        ),
+-                        Scaffold(
+-                          backgroundColor: Colors.transparent,
+-                          body: Column(
+-                            children: [
+-                              Container(
+-                                height: height*0.35,
+-                                decoration:  BoxDecoration(
+-                                    color: Color.fromRGBO(25, 58, 106, 100),
+-                                    image: DecorationImage(
+-                                      image:NetworkImage("${data['profileImg']}"),)
+-                                ),
+-                              ),
+-                              Expanded(child: Container(
+-                                decoration: BoxDecoration(
+-                                    borderRadius: BorderRadius.only(topLeft:
+-                                    Radius.circular(15.0),
+-                                        topRight: Radius.circular(15.0)),color: Colors.white),
+-                                child:ListView(children: [
+-
+-                                  Divider(
+-                                      height: 20,
+-                                      thickness: 3,
+-                                      indent: 40,
+-                                      endIndent: 40,
+-                                      color: Color.fromRGBO(26, 59, 106, 1.0)
+-                                  ),
+-                                  SizedBox(height: height*0.02,),
+-                                   Center(child: Text("${data['ProfileStatus']}",style: TextStyle(color: Color.fromRGBO(26, 59, 106, 1.0),fontWeight: FontWeight.bold,fontSize: 40,),)),
+-                                  Divider(
+-                                    height: 20,
+-                                    thickness: 3,
+-                                    indent: 40,
+-                                    endIndent: 40,
+-                                      color: Color.fromRGBO(26, 59, 106, 1.0)
+-                                  ),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.04),
+-                                    child: Center(child: Text("${data['name']}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 35),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.0,),
+-                                    child: Center(child: Text("${data['subtitle']}",style: TextStyle(color: Colors.black54,fontSize: 20),)),),
+-                                  Divider(
+-                                      height: 20,
+-                                      thickness: 3,
+-                                      indent: 40,
+-                                      endIndent: 40,
+-                                      color: Color.fromRGBO(26, 59, 106, 1.0)
+-                                  ),
+-                                  const Center(child: Text("PERSONAL INFORMATION",style: TextStyle(color: Color.fromRGBO(26, 59, 106, 1.0),fontWeight: FontWeight.bold,fontSize: 30,),)),
+-                                  Divider(
+-                                      height: 20,
+-                                      thickness: 3,
+-                                      indent: 40,
+-                                      endIndent: 40,
+-                                      color: Color.fromRGBO(26, 59, 106, 1.0)
+-                                  ),
+-
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.04),
+-                                    child: Center(child: Text("Email:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.02, bottom: height*0.02),
+-                                    child: Center(child: Text("${data['email']} ")),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.04),
+-                                    child: Center(child: Text("Phone Number:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.02, bottom: height*0.02),
+-                                    child: Center(child: Text("${data['phone number']} ")),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01),
+-                                    child: Center(child: Text("Cnic:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01, bottom: height*0.01),
+-                                    child: Center(child: Text('${data['cnic']}')),),
+-
+-                                  SizedBox(height: height*0.02,),
+-                                  Divider(
+-                                      height: 20,
+-                                      thickness: 3,
+-                                      indent: 40,
+-                                      endIndent: 40,
+-                                      color: Color.fromRGBO(26, 59, 106, 1.0)
+-                                  ),
+-                                  const Center(child: Text("VET INFORMATION",style: TextStyle(color: Color.fromRGBO(26, 59, 106, 1.0),fontWeight: FontWeight.bold,fontSize: 32,),)),
+-                                  Divider(
+-                                      height: 20,
+-                                      thickness: 3,
+-                                      indent: 40,
+-                                      endIndent: 40,
+-                                      color: Color.fromRGBO(26, 59, 106, 1.0)
+-                                  ),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01),
+-                                    child: Center(child: Text("VetLiceance:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01, bottom: height*0.01),
+-                                    child: Center(child: Text('${data['VetLiceance']}')),),
+-
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.04),
+-                                    child: Center(child: Text("Experience:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.02, bottom: height*0.02),
+-                                    child: Center(child: Text("${data['year']} ")),),
+-
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01),
+-                                    child: Center(child: Text("Qualification:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01, bottom: height*0.01),
+-                                    child: Center(child: Text('${data['specialization']}')),),
+-                                  SizedBox(height: height*0.02,),
+-                                  Divider(
+-                                      height: 20,
+-                                      thickness: 3,
+-                                      indent: 40,
+-                                      endIndent: 40,
+-                                      color: Color.fromRGBO(26, 59, 106, 1.0)
+-                                  ),
+-                                  const Center(child: Text("CLINIC INFORMATION",style: TextStyle(color: Color.fromRGBO(26, 59, 106, 1.0),fontWeight: FontWeight.bold,fontSize: 30,),)),
+-                                  Divider(
+-                                      height: 20,
+-                                      thickness: 3,
+-                                      indent: 40,
+-                                      endIndent: 40,
+-                                      color: Color.fromRGBO(26, 59, 106, 1.0)
+-                                  ),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01),
+-                                    child: Center(child: Text("Clinic Name:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.02, bottom: height*0.02),
+-                                    child: Center(child: Text('${data['ClinicName']}')),),
+-
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01),
+-                                    child: Center(child: Text("Location:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.02, bottom: height*0.02),
+-                                    child: Center(child: Text('${data['location']}')),),
+-
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01),
+-                                    child: Center(child: Text("Timming:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.02),
+-                                    child: Center(child: Text("Monday - Sunday")),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01, bottom: height*0.02),
+-                                    child: Center(child: Text('${data['start time']} to ${data['end time']}')),),
+-
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01),
+-                                    child: Center(child: Text("Charges:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.02, bottom: height*0.02),
+-                                    child: Center(child: Text("Rs: ${data['price']}")),),
+-
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,top: height*0.01),
+-                                    child: Center(child: Text("About:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                  Padding(padding: EdgeInsets.only(left: width*0.0,right:width*0.02, top: height*0.02, bottom: height*0.01),
+-                                    child: Center(
+-                                      child: Text('${data['description']}',style: TextStyle(),textAlign: TextAlign.justify,
+-                                      ),
+-                                    ),),
+-
+-                                  if(status=="UnApproved")
+-                                    ...[
+-                                      Row(
+-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+-                                        children: [
+-                                          Padding(
+-                                            padding: const EdgeInsets.all(12),
+-                                            child: MaterialButton(onPressed: () async {
+-                                              final _db = FirebaseFirestore.instance;
+-                                              await _db.collection("vets").doc(itemId).update({
+-                                                "ProfileStatus": "Approved"
+-                                              });},
+-                                              minWidth: 300,
+-                                              height: 50,
+-                                              color: Color.fromRGBO(25, 58, 106, 5),
+-                                              child: Text("Approve Profile",style: TextStyle(color: Colors.white),
+-                                              ),
+-                                            ),
+-                                          ),
+-                                        ],
+-                                      ),
+-                                    ]
+-
+-                                ],
+-                                ),
+-                              )
+-                              )
+-                            ],
+-                          ),
+-                        )
+-                      ],
+-                    ),
+-                  ),
+-                ),
+-              ),
+-            ],
+-          ),
+-        );
+-
+-
+-
+-      }
+-
+-      return Center(child: CircularProgressIndicator());
+-    },
+-  ),
+-  );
+-}
+-}
+Index: lib/Screens/Doctors/doctor_screen.dart
+===================================================================
+diff --git a/lib/Screens/Doctors/doctor_screen.dart b/lib/Screens/Doctors/doctor_screen.dart
+deleted file mode 100644
+--- a/lib/Screens/Doctors/doctor_screen.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,178 +0,0 @@
+-import 'package:easy_sidemenu/easy_sidemenu.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:flutter_screenutil/flutter_screenutil.dart';
+-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+-import 'package:pps_web_admin/Screens/Doctors/doctor_view_profile/view_profile_screen.dart';
+-import 'package:pps_web_admin/Screens/Doctors/doctors_edit_screen/doctors_edit_screen.dart';
+-import 'package:pps_web_admin/Screens/HomePage/home.dart';
+-import 'package:pps_web_admin/components/widget/dashboard_name.dart';
+-import 'package:pps_web_admin/components/widget/drawer.dart';
+-import 'package:pps_web_admin/constants.dart';
+-import 'package:pps_web_admin/model/vet.dart';
+-import 'package:syncfusion_flutter_charts/charts.dart';
+-
+-import '../Doctors/item_list.dart';
+-
+-class DoctorScreen extends StatefulWidget {
+-  DoctorScreen({Key? key}) : super(key: key);
+-
+-  @override
+-  _DoctorScreenState createState() => _DoctorScreenState();
+-}
+-
+-class _DoctorScreenState extends State<DoctorScreen> {
+-  // final user= FirebaseAuth.instance.currentUser!;
+-  @override
+-  Widget build(BuildContext context) {
+-    return Scaffold(
+-        body: Row(
+-          children: [
+-          CustomDrawer(),
+-            SizedBox(
+-              width: 0.02.sw,
+-            ),
+-            Expanded(
+-              flex: 5,
+-              child: Column(
+-                children: [
+-                 DashboardName(title: "Doctors Dashboard",),
+-                  Expanded(
+-                    child: GridView.builder(
+-                      padding: REdgeInsets.all(10),
+-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+-                          crossAxisSpacing: 10,
+-                          mainAxisSpacing: 10,
+-                          crossAxisCount: 3),
+-                      itemBuilder: (context, index) {
+-                        return Card(
+-                          elevation: 8,
+-                          shape: RoundedRectangleBorder(
+-                              borderRadius: BorderRadius.circular(10)),
+-                          child: Stack(
+-                            children: [
+-                              _StackBgCard(),
+-                              Column(
+-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+-                                children: [
+-                                  _doctorsProfile(index: index),
+-                                  _doctorStats(index: index),
+-                                  Container(
+-                                    height: 0.1.sh,
+-                                    margin: REdgeInsets.all(10),
+-                                    child: Row(
+-                                      children: [
+-                                        Expanded(
+-                                          child: ElevatedButton(
+-                                            style: ButtonStyle(
+-                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+-                                                    RoundedRectangleBorder(
+-                                                      borderRadius: BorderRadius.circular(8.0),
+-                                                    )
+-                                                ),
+-                                            ),
+-                                            onPressed: () async {
+-                                              Navigator.push(context,
+-                                                  MaterialPageRoute(builder: (context) {
+-                                                    return ViewDoctorScreen(vets: vetList[index],);
+-                                                  }));
+-
+-                                            }, child: Text("View profile"),
+-                                          ),
+-                                        ),
+-                                        SizedBox(width: 10,),
+-                                        Expanded(
+-                                          child: ElevatedButton(
+-                                            style: ButtonStyle(
+-                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+-                                                  RoundedRectangleBorder(
+-                                                    borderRadius: BorderRadius.circular(8.0),
+-                                                  ),
+-                                                ),
+-                                                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red)
+-                                            ),
+-                                            onPressed: () async {
+-                                              Navigator.push(context,
+-                                                  MaterialPageRoute(builder: (context) {
+-                                                    return DoctorEditScreen(vets: vetList[index],);
+-                                                  }));
+-                                            }, child: Text("Edit Profile"),
+-                                          ),
+-                                        ),
+-                                      ],
+-                                    ),
+-                                  ),
+-                                ],
+-                              ),
+-                            ],
+-                          ),
+-                        );
+-                      },
+-                      itemCount: vetList.length,
+-                    ),
+-                  ),
+-                ],
+-              ),
+-            ),
+-          ],
+-        ));
+-  }
+-  Widget _StackBgCard() => Column(
+-        children: [
+-          Expanded(
+-              child: Container(
+-            decoration: BoxDecoration(
+-                image: DecorationImage(
+-                    image: AssetImage("assets/images/doctor.jpg"),
+-                    fit: BoxFit.cover)),
+-            child: Container(
+-              color: Colors.blue.withOpacity(0.5),
+-            ),
+-          )),
+-          Expanded(
+-              child: Container(
+-            color: Colors.white,
+-          )),
+-        ],
+-      );
+-
+-
+-
+-  Widget _doctorsProfile({required int index})=>  Card(
+-    margin: REdgeInsets.all(10),
+-    color: Colors.white,
+-    child: ListTile(
+-      contentPadding: REdgeInsets.all(10),
+-      visualDensity: const VisualDensity(vertical: 4),
+-      leading: Container(
+-        width: 100,
+-        height: 100,
+-        decoration: BoxDecoration(
+-            borderRadius: BorderRadius.circular(10),
+-            image: DecorationImage(
+-                image: NetworkImage(vetList[index]
+-                    .profileImg
+-                    .toString()),fit: BoxFit.cover)),
+-      ),
+-      title: Text(vetList[index].name.toString()),
+-      subtitle: Text(vetList[index].email.toString()),
+-    ),
+-  );
+-
+-
+-
+-  Widget _doctorStats({required int index})=> Container(
+-    height: 0.1.sh,
+-    margin: REdgeInsets.all(10),
+-    child: Row(
+-      crossAxisAlignment: CrossAxisAlignment.center,
+-      children: [
+-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].year.toString()),subtitle: Text("Doctors Experience"),),),)),
+-        SizedBox(width:10,),
+-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].qualification.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("Doctors Qualification"),),),)),
+-        SizedBox(width:10,),
+-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].price.toString()),subtitle: Text("Doctors Services"),),),)),
+-      ],),
+-  );
+-
+-}
+Index: lib/Screens/Doctors/item_list.dart
+===================================================================
+diff --git a/lib/Screens/Doctors/item_list.dart b/lib/Screens/Doctors/item_list.dart
+deleted file mode 100644
+--- a/lib/Screens/Doctors/item_list.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,282 +0,0 @@
+-import 'package:cloud_firestore/cloud_firestore.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:firebase_core_web/firebase_core_web.dart';
+-import 'package:cloud_firestore_web/cloud_firestore_web.dart';
+-import '../HomePage/home.dart';
+-import 'detailsnew.dart';
+-import 'package:flutter/material.dart';
+-import 'package:flutter/rendering.dart';
+-
+-
+-class ItemList extends StatelessWidget {
+-  ItemList({Key? key}) : super(key: key) {
+-    _stream = _reference.snapshots();
+-  }
+-
+-  CollectionReference _reference =
+-  FirebaseFirestore.instance.collection('vets');
+-  final user= FirebaseAuth.instance.currentUser!;
+-
+-  late Stream<QuerySnapshot> _stream;
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    double w=MediaQuery.of(context).size.width;
+-    double h=MediaQuery.of(context).size.height;
+-
+-    return Scaffold(
+-      body: Container(
+-        width: w,
+-        height: h,
+-        color: Color.fromRGBO(166, 166, 166, 1.0),
+-        child: Row(
+-          children: [
+-            Drawer(
+-              backgroundColor: Color.fromRGBO(26, 59, 106, 0.8745098039215686),
+-
+-              child: ListView(
+-
+-                // Remove padding
+-                padding: EdgeInsets.zero,
+-                children: [
+-
+-                  UserAccountsDrawerHeader(
+-                    accountName: Text('Hi, '+ user.email!,style: TextStyle(
+-                      color: Colors.white,
+-                    )),
+-                    accountEmail: Text('How is Your Pet Health?' ,style: TextStyle(
+-                      color: Colors.white,
+-                    )),
+-                    /*currentAccountPicture: CircleAvatar(
+-                child: ClipOval(
+-                  child: Image.asset('android/Images/logo.png',
+-                    fit: BoxFit.fitHeight,
+-                    width: 110,
+-                    height: 110,
+-                  ),
+-                ),
+-              ),*/
+-                    decoration: BoxDecoration(
+-                      //color:Color.fromRGBO(26, 59, 106, 0.023529411764705882),
+-                    ),
+-                  ),
+-                  ListTile(
+-                      leading: Icon(Icons.home,color: Colors.white,),
+-                      title: Text('Home',style: TextStyle(
+-                        color: Colors.white,
+-                      )),
+-                      onTap: () {
+-                        Navigator.push(
+-                            context,
+-                            MaterialPageRoute(
+-                                builder: (context) {
+-                                  return HomePage();
+-                                }
+-                            )
+-                        );
+-                      }
+-                  ),
+-
+-                  ListTile(
+-                      leading: Icon(Icons.person,color: Colors.white,),
+-                      title: Text('Vets',style: TextStyle(
+-                        color: Colors.white,
+-                      )),
+-                      onTap: () {
+-                        Navigator.push(
+-                            context,
+-                            MaterialPageRoute(
+-                                builder: (context) {
+-                                  return ItemList();
+-                                }
+-                            )
+-                        );
+-                      }
+-                  ),
+-                  ListTile(
+-                    leading: Icon(Icons.settings,color: Colors.white,),
+-                    title: Text('Settings',style: TextStyle(
+-                      color: Colors.white,
+-                    )),
+-                    onTap: () => null,
+-                  ),
+-                  Divider(),
+-                  ListTile(
+-                    title: Text('Logout',style: TextStyle(
+-                      color: Colors.white,
+-                    )),
+-                    leading: Icon(Icons.exit_to_app,color: Colors.white,),
+-                    onTap: () => FirebaseAuth.instance.signOut(),
+-                  ),
+-                ],
+-              ),
+-            ),
+-            Padding(
+-              padding: const EdgeInsets.only(left: 5),
+-              child: Container(
+-                height: h,
+-                width: w*0.7,
+-                child: StreamBuilder<QuerySnapshot>(
+-                  stream: _stream,
+-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+-                    //Check error
+-                    if (snapshot.hasError) {
+-                      return Center(child: Text('Some error occurred ${snapshot.error}'));
+-                    }
+-
+-                    //Check if data arrived
+-                    if (snapshot.hasData) {
+-                      //get the data
+-                      QuerySnapshot querySnapshot = snapshot.data;
+-                      List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+-                      final User? currentUser = FirebaseAuth.instance.currentUser!;
+-
+-                      //Convert the documents to Maps
+-                      List<Map> items = documents.map((e) =>
+-                      {
+-                        'id': e.id,
+-                        'name': e['name'],
+-                        'subtitle': e['subtitle'],
+-                        'profileImg': e['profileImg'],
+-                        'year': e['year'],
+-                        'price': e['price'],
+-                        'ClinicName': e['ClinicName'],
+-                        'ProfileStatus': e['ProfileStatus'],
+-                        'email': e['email'],
+-
+-                      }).toList();
+-
+-                      //Display the list
+-                      return ListView.builder(
+-                          itemCount: items.length,
+-                          itemBuilder: (BuildContext context, int index) {
+-                            //Get the item at this index
+-                            Map thisItem = items[index];
+-                            var status= thisItem['ProfileStatus'];
+-
+-                            //REturn the widget for the list items
+-                            return Padding(
+-                              padding: const EdgeInsets.only(left: 0,right: 50,top: 10,bottom: 10),
+-                              child: Center(
+-                                child: Container(
+-                                  width: w*0.4,
+-                                  height: h*0.3,
+-                                  color: Color.fromRGBO(1, 24, 47, 1.0),
+-                                  child:Column(
+-                                    children: [
+-                                      Row(
+-                                        children: [
+-                                          SizedBox(
+-                                            height: h*0.3,
+-                                            child: Image(image: NetworkImage("${thisItem['profileImg']}")),
+-                                          ),
+-                                          SizedBox(
+-                                            height: h*0.3,
+-                                            child: VerticalDivider(
+-                                              width: 15,
+-                                              color: Colors.white, //color of divider
+-                                              thickness: 5, //thickness of divier line
+-                                              indent: 1, //spacing at the start of divider
+-                                              endIndent: 1, //spacing at the end of divider
+-                                            ),),
+-
+-
+-                                          SizedBox(
+-                                            height: h*0.3,
+-                                            child: Padding(
+-                                              padding: const EdgeInsets.only(left: 45,top: 15),
+-                                              child: Column(
+-                                                children: [
+-                                                  Center(
+-                                                    child: Text(
+-                                                      "${thisItem['ProfileStatus']}",
+-                                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35,color: Colors.white),
+-                                                    ),
+-                                                  ),
+-
+-                                                  Text(
+-                                                    "Name: ${thisItem['name']}",
+-                                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14,color: Colors.white),
+-                                                  ),
+-                                                  Text(
+-                                                    "Subtitle: ${thisItem['subtitle']}",
+-                                                    style: TextStyle(
+-                                                        fontSize: 14, color: Colors.white),
+-                                                  ),
+-                                                  Text(
+-                                                    "Clinic Name: ${thisItem['ClinicName']}",
+-                                                    style: TextStyle(
+-                                                        fontSize: 14, color: Colors.white),
+-                                                  ),
+-                                                  Text(
+-                                                    "Email: ${thisItem['email']}",
+-                                                    style: TextStyle(fontSize: 14, color: Colors.white),
+-                                                  ),
+-
+-                                                  InkWell(
+-                                                    onTap: () {
+-                                                      Navigator.of(context).push(
+-                                                          MaterialPageRoute(
+-                                                              builder: (context) =>
+-                                                                  ItemDetails(thisItem['id'] )));
+-                                                    },
+-
+-                                                    child: Padding(
+-                                                      padding: const EdgeInsets.only(top:5),
+-                                                      child: Container(
+-                                                        width: 250,
+-                                                        height: 40,
+-                                                        decoration:
+-                                                        BoxDecoration(color:  Colors.white,
+-                                                            borderRadius: BorderRadius.circular(24)),
+-                                                        padding:  EdgeInsets.all(5),
+-                                                        child: const Center(
+-                                                          child: Text(
+-                                                            "View Details",
+-                                                            style: TextStyle(color: Color.fromRGBO(1, 24, 47, 1.0)),
+-                                                          ),
+-                                                        ),
+-                                                      ),
+-                                                    ),
+-                                                  ),
+-
+-                                                ],
+-                                              ),
+-                                            ),
+-                                          )
+-
+-                                        ],
+-
+-                                      ),
+-
+-
+-
+-                                    ],
+-                                  ),
+-                                ),
+-                              ),
+-                            );
+-                          });
+-                    }
+-
+-                    //Show loader
+-                    return Center(child: CircularProgressIndicator());
+-                  },
+-                ),
+-              ),
+-            ),
+-          ],
+-        ),
+-      ), //Display a list // Add a FutureBuilder
+-      /* floatingActionButton: FloatingActionButton(
+-        onPressed: () {
+-          Navigator.of(context)
+-              .push(MaterialPageRoute(builder: (context) => AddItem()));
+-        },
+-        tooltip: 'Increment',
+-        child: const Icon(Icons.add),
+-      ),
+-    */);
+-  }
+-}
+Index: lib/Screens/Doctors/rough
+===================================================================
+diff --git a/lib/Screens/Doctors/rough b/lib/Screens/Doctors/rough
+deleted file mode 100644
+--- a/lib/Screens/Doctors/rough	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,130 +0,0 @@
+- child: InkWell(
+-
+-                          child: Container(
+-                            color: Color.fromRGBO(97, 97, 98, 0.08235294117647059),
+-                            padding: const EdgeInsets.all(16),
+-                            child: Column(
+-                              children: [
+-                                Align(
+-                                  alignment: Alignment.topRight,
+-                                  child: Container(
+-                                    color: Colors.black,
+-                                  ),
+-                                ),
+-                                Row(
+-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+-                                  children: [
+-                                    Text(thisItem['ProfileStatus']),
+-                                    Text(
+-                                      "".toUpperCase(),
+-                                      style: const TextStyle(
+-                                        fontWeight: FontWeight.bold, color: Color.fromRGBO(
+-                                          26, 59, 106, 1.0),
+-                                      ),
+-                                    ),
+-                                  ],
+-                                ),
+-                                const SizedBox(
+-                                  height: 16,
+-                                ),
+-                                Row(
+-                                  children: [
+-                                    CircleAvatar(
+-                                      radius: 32,
+-                                      backgroundImage: NetworkImage("${thisItem['profileImg']}"),
+-
+-                                    ),
+-                                    const SizedBox(
+-                                      width: 16,
+-                                    ),
+-                                    Column(
+-                                      crossAxisAlignment: CrossAxisAlignment.start,
+-                                      children: [
+-
+-                                        Text(
+-                                          "${thisItem['name']}",
+-                                          style: TextStyle(fontWeight: FontWeight.bold),
+-                                        ),
+-                                        Padding(
+-                                          padding: EdgeInsets.symmetric(vertical: 8),
+-                                          child: Text(
+-                                            "${thisItem['subtitle']}",
+-                                            style: TextStyle(
+-                                                fontSize: 12, color: Colors.blueGrey),
+-                                          ),
+-                                        ),
+-                                        Row(
+-                                          children:  [
+-                                            CircleAvatar(
+-                                              radius: 10,
+-                                            ),
+-                                            SizedBox(width: 4),
+-                                            Text(
+-                                              "${thisItem['year']} Years",
+-                                              style: TextStyle(
+-                                                  fontSize: 12, color: Colors.blueGrey),
+-                                            ),
+-                                            SizedBox(
+-                                              width: 8,
+-                                            ),
+-                                            // CircleAvatar(
+-                                            // radius: 10,
+-                                            //),
+-                                            SizedBox(
+-                                              width: 4,
+-                                            ),
+-
+-                                          ],
+-                                        )
+-                                      ],
+-                                    ),
+-                                  ],
+-                                ),
+-                                const SizedBox(
+-                                  height: 16,
+-                                ),
+-                                Row(
+-                                  children: [
+-                                    Column(
+-                                      crossAxisAlignment: CrossAxisAlignment.start,
+-                                      children:  [
+-                                        Text("Total fee"),
+-                                        Text(
+-                                          "${thisItem['price']}",
+-                                          style: TextStyle(fontWeight: FontWeight.bold),
+-                                        ),
+-                                      ],
+-                                    ),
+-                                    const SizedBox(
+-                                      width: 16,
+-                                    ),
+-                                    Expanded(
+-                                        child: InkWell(
+-                                          onTap: () {
+-                                            Navigator.of(context).push(
+-                                                MaterialPageRoute(
+-                                                    builder: (context) =>
+-                                                        ItemDetails(thisItem['id'] )));
+-                                          },
+-
+-                                          child: Container(
+-                                            decoration:
+-                                            BoxDecoration(color: const Color.fromRGBO(
+-                                                26, 59, 106, 1.0),
+-                                                borderRadius: BorderRadius.circular(24)),
+-                                            padding: const EdgeInsets.symmetric(vertical: 12),
+-                                            child: const Center(
+-                                              child: Text(
+-                                                "View Details",
+-                                                style: TextStyle(color: Colors.white),
+-                                              ),
+-                                            ),
+-                                          ),
+-                                        )),
+-                                  ],
+-                                )
+-                              ],
+-                            ),
+-                          ),
+-                        ),
+-                      )
+\ No newline at end of file
+Index: lib/Screens/doctors_edit_screen/doctors_edit_screen.dart
+===================================================================
+diff --git a/lib/Screens/doctors_edit_screen/doctors_edit_screen.dart b/lib/Screens/doctors_edit_screen/doctors_edit_screen.dart
+deleted file mode 100644
+--- a/lib/Screens/doctors_edit_screen/doctors_edit_screen.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,142 +0,0 @@
+-import 'package:cloud_firestore/cloud_firestore.dart';
+-import 'package:flutter/material.dart';
+-import 'package:flutter_screenutil/flutter_screenutil.dart';
+-import 'package:pps_web_admin/Screens/Doctors/doctor_screen.dart';
+-import 'package:pps_web_admin/components/widget/custom_textfield.dart';
+-import 'package:pps_web_admin/components/widget/dashboard_name.dart';
+-import 'package:pps_web_admin/components/widget/drawer.dart';
+-import 'package:pps_web_admin/constants.dart';
+-import 'package:pps_web_admin/model/users_model.dart';
+-import 'package:pps_web_admin/model/vet.dart';
+-
+-class DoctorEditScreen extends StatefulWidget {
+-  Vets vets;
+-   DoctorEditScreen({Key? key,required this.vets}) : super(key: key);
+-
+-  @override
+-  State<DoctorEditScreen> createState() => _DoctorEditScreenState();
+-}
+-
+-class _DoctorEditScreenState extends State<DoctorEditScreen> {
+-  late TextEditingController name;
+-  late TextEditingController profileStatus;
+-  late TextEditingController profileType;
+-  late TextEditingController profileUnapprovalReason;
+-  late TextEditingController vetLiceance;
+-  late TextEditingController cnic;
+-  late TextEditingController email;
+-  late TextEditingController phoneNumber;
+-  late TextEditingController profileImg;
+-  late TextEditingController qualification;
+-  late TextEditingController specialization;
+-  late TextEditingController year;
+-  @override
+-  void initState() {
+-
+-    setState(() {
+-      name=TextEditingController(text: widget.vets.name);
+-      profileStatus=TextEditingController(text: widget.vets.profileStatus);
+-      profileType=TextEditingController(text: widget.vets.profileType);
+-      profileUnapprovalReason=TextEditingController(text: widget.vets.profileUnapprovalReason);
+-      vetLiceance=TextEditingController(text: widget.vets.vetLiceance);
+-      cnic=TextEditingController(text: widget.vets.cnic);
+-      email=TextEditingController(text: widget.vets.email);
+-      phoneNumber=TextEditingController(text: widget.vets.phoneNumber);
+-      qualification=TextEditingController(text: widget.vets.qualification);
+-      specialization=TextEditingController(text: widget.vets.specialization);
+-      year=TextEditingController(text: widget.vets.year);
+-      });
+-    super.initState();
+-  }
+-  @override
+-  Widget build(BuildContext context) {
+-    return Scaffold(
+-      body: Row(
+-        children: [
+-          CustomDrawer(),
+-          SizedBox(
+-            width: 0.02.sw,
+-          ),
+-          Expanded(
+-              flex: 8,
+-              child: Column(
+-                children: [
+-              DashboardName(title: "Edit Doctors",),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "Name",controller: name,)),
+-              Expanded(child: CustomTextField(obscure: false,hint: "profile Status",controller: profileStatus,))
+-            ],),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "profile Type",controller: profileType,)),
+-              Expanded(child: CustomTextField(obscure: false,hint: "profile Unapproval Reason",controller: profileUnapprovalReason,))
+-            ],),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "Vet Liceance Number",controller: vetLiceance,)),
+-              Expanded(child: CustomTextField(obscure: false,hint: "CNIC",controller: cnic,))
+-            ],),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "Email",controller: email,)),
+-              Expanded(child: CustomTextField(obscure: false,hint: "Phone Number",controller: phoneNumber,)),
+-
+-            ],),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "qualification",controller: qualification,))
+-            ],),
+-            Row(children: [
+-              Expanded(child: CustomTextField(obscure: false,hint: "Specialization",controller: specialization,)),
+-              Expanded(child: CustomTextField(obscure: false,hint: "Experience",controller: year,))
+-            ],),
+-                  Center(child: ElevatedButton(
+-                    style: ButtonStyle(
+-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+-                            RoundedRectangleBorder(
+-                              borderRadius: BorderRadius.circular(8.0),
+-                            )
+-                        )
+-                    ),
+-                    onPressed: () async {
+-                      Vets vets=Vets(
+-                        cnic: cnic.text,
+-                        description: widget.vets.description,
+-                        email: email.text,
+-                        name: name.text,
+-                        phoneNumber: phoneNumber.text,
+-                        profileImg: widget.vets.profileImg,
+-                        profileStatus: profileStatus.text,
+-                        profileType: profileType.text,
+-                        profileUnapprovalReason:profileUnapprovalReason.text,
+-                        qualification:qualification.text,
+-                        specialization: specialization.text,
+-                        uid: widget.vets.uid,
+-                        vetLiceance: vetLiceance.text,
+-                        year: year.text,
+-                      );
+-                      FirebaseFirestore.instance.collection("vets").doc(widget.vets.uid).update(vets.toJson());
+-                      await getValue();
+-                      Navigator.push(context,
+-                          MaterialPageRoute(builder: (context) {
+-                            return DoctorScreen();
+-                          }));
+-                    }, child: Text("Edit Profile"),
+-                  ),),
+-                  SizedBox(
+-                    width: 0.02.sw,
+-                    height: 0.1.sh,
+-                  ),
+-
+-          ],)),
+-        ],
+-      )
+-    );
+-  }
+-  getValue() async {
+-    userCount = await getUser();
+-    vetCount = await getVets();
+-    clinicCount = await getClinic();
+-    bookingCount = await getBookings();
+-    vetList   =await fetchDoctors();
+-    userList=await fetchUsers();
+-    setState(() {});
+-    print(userList);
+-  }
+-}
+Index: lib/Screens/HomePage/home.dart
+===================================================================
+diff --git a/lib/Screens/HomePage/home.dart b/lib/Screens/HomePage/home.dart
+deleted file mode 100644
+--- a/lib/Screens/HomePage/home.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,237 +0,0 @@
+-import 'package:easy_sidemenu/easy_sidemenu.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:flutter_screenutil/flutter_screenutil.dart';
+-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+-import 'package:pps_web_admin/Screens/Doctors/doctor_screen.dart';
+-import 'package:pps_web_admin/components/widget/dashboard_name.dart';
+-import 'package:pps_web_admin/components/widget/drawer.dart';
+-import 'package:pps_web_admin/constants.dart';
+-import 'package:pps_web_admin/model/vet.dart';
+-import 'package:syncfusion_flutter_charts/charts.dart';
+-
+-import '../Doctors/item_list.dart';
+-
+-class HomePage extends StatefulWidget {
+-  HomePage({Key? key}) : super(key: key);
+-
+-  @override
+-  _HomePageState createState() => _HomePageState();
+-}
+-
+-class _HomePageState extends State<HomePage> {
+-  
+-  @override
+-  Widget build(BuildContext context) {
+-    return Scaffold(
+-        body: Row(
+-          children: [
+-           CustomDrawer(),
+-            SizedBox(
+-              width: 0.05.sw,
+-            ),
+-            Expanded(
+-              flex: 5,
+-              child: Column(
+-                children: [
+-                  DashboardName(title: "Doctors Dashboard",),
+-                  Row(
+-                    children: [
+-                      _userCard(),
+-                      Expanded(
+-                        child: Column(
+-                          children: [
+-                            Row(children: [
+-                              _statsCard(
+-                                  label: 'Available Users',
+-                                  value: '${userCount} Users',
+-                                  icon: Icon(
+-                                    Icons.supervised_user_circle_sharp,
+-                                    size: 50,
+-                                    color: kPrimaryColor,
+-                                  )),
+-                              _statsCard(
+-                                  label: 'Available Doctors',
+-                                  value: '${vetCount} Doctors',
+-                                  icon: Icon(
+-                                    Icons.monitor_heart_outlined,
+-                                    size: 50,
+-                                    color: kPrimaryColor,
+-                                  )),
+-                            ]),
+-                            Row(children: [
+-                              _statsCard(
+-                                  label: 'Total Clinics',
+-                                  value: '${clinicCount} Clinics',
+-                                  icon: Icon(
+-                                    Icons.local_hospital,
+-                                    size: 50,
+-                                    color: kPrimaryColor,
+-                                  )),
+-                              _statsCard(
+-                                  label: 'Total Bookings',
+-                                  value: '${bookingList.length} Bookings',
+-                                  icon: Icon(
+-                                    Icons.book_online,
+-                                    size: 50,
+-                                    color: kPrimaryColor,
+-                                  )),
+-                            ]),
+-                          ],
+-                        ),
+-                      )
+-                    ],
+-                  ),
+-                  SizedBox(
+-                    height: 30,
+-                  ),
+-                  Row(
+-                    children: [
+-                      Expanded(
+-                          flex: 11,
+-                          child: Card(
+-                              shape: RoundedRectangleBorder(
+-                                  borderRadius: BorderRadius.circular(16)),
+-                              elevation: 8,
+-                              child: SizedBox(height: 0.5.sh, child: graph()))),
+-                      SizedBox(
+-                        width: 20,
+-                      ),
+-                      Expanded(
+-                          flex: 5,
+-                          child: Card(
+-                            shape: RoundedRectangleBorder(
+-                                borderRadius: BorderRadius.circular(16)),
+-                            child: Column(
+-                              children: [
+-                                Container(height: 0.10.sh,
+-                                      decoration: BoxDecoration(
+-                                      color: Colors.blue,
+-                                      borderRadius: BorderRadius.only(
+-                                          topLeft: Radius.circular(16),
+-                                          topRight: Radius.circular(16))),
+-                                  child: Center(child: Text("Best Rated Doctors List",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),),
+-                                SizedBox(height: 0.02.sh,),
+-                                Container(
+-                                  height: 0.38.sh,
+-                                  decoration: BoxDecoration(
+-                                      color: Colors.white,
+-                                      borderRadius: BorderRadius.only(
+-                                          bottomLeft: Radius.circular(16),
+-                                          bottomRight: Radius.circular(16))),
+-                                  child: vetList.length>0?ListView.separated(
+-                                      itemBuilder: (context, index) {
+-                                        return Card(
+-                                          elevation: 8,
+-                                          child: ListTile(
+-                                            visualDensity: VisualDensity(vertical: 4),
+-                                            leading: Container(
+-                                              width: 50,
+-                                              height: 50,
+-                                              decoration: BoxDecoration(
+-                                                image: DecorationImage(
+-                                                  image: NetworkImage(vetList[index].profileImg.toString()),
+-                                                  fit: BoxFit.cover
+-                                                ),
+-                                                shape: BoxShape.circle
+-                                              ),
+-                                            ),
+-                                            title: Text(vetList[index].name.toString()),
+-                                            subtitle: Text(vetList[index].email.toString()),
+-                                          ),
+-                                        );
+-                                      },
+-                                      separatorBuilder: (context, index) {
+-                                        return SizedBox(
+-                                          height: 10,
+-                                        );
+-                                      },
+-                                      itemCount: vetList.length):Center(child: CircularProgressIndicator(),),
+-                                ),
+-                              ],
+-                            ),
+-                          )),
+-                      Spacer(
+-                        flex: 1,
+-                      )
+-                    ],
+-                  ),
+-                  Spacer(),
+-                ],
+-              ),
+-            ),
+-          ],
+-        ));
+-  }
+-
+-  Widget _userCard() => Card(
+-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+-        elevation: 8,
+-        child: Container(
+-          width: 0.3.sw,
+-          height: 0.25.sh,
+-          decoration: BoxDecoration(
+-              borderRadius: BorderRadius.circular(16),
+-              image: DecorationImage(
+-                  image: AssetImage("assets/images/main_card.png"),
+-                  fit: BoxFit.fill)),
+-        ),
+-      );
+-
+-  Widget _statsCard(
+-          {required String label,
+-          required String value,
+-          required Widget icon}) =>
+-      Card(
+-          elevation: 8.0,
+-          shape:
+-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+-          child: SizedBox(
+-            width: 0.22.sw,
+-            height: 0.12.sh,
+-            child: Center(
+-              child: ListTile(
+-                leading: icon,
+-                title: Text(
+-                  value,
+-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+-                ),
+-                subtitle: Text(
+-                  label,
+-                  style: TextStyle(fontSize: 20),
+-                ),
+-              ),
+-            ),
+-          ));
+-
+-  Widget graph() => SfCartesianChart(
+-          primaryXAxis: CategoryAxis(),
+-          // Chart title
+-          title: ChartTitle(text: 'Half yearly sales analysis'),
+-          // Enable legend
+-          legend: Legend(isVisible: true),
+-          // Enable tooltip
+-          tooltipBehavior: TooltipBehavior(enable: true),
+-          series: <ChartSeries<_SalesData, String>>[
+-            LineSeries<_SalesData, String>(
+-                dataSource: [
+-                  _SalesData('Jan', 35),
+-                  _SalesData('Feb', 28),
+-                  _SalesData('Mar', 34),
+-                  _SalesData('Apr', 32),
+-                  _SalesData('May', 40)
+-                ],
+-                xValueMapper: (_SalesData sales, _) => sales.month,
+-                yValueMapper: (_SalesData sales, _) => sales.sales,
+-                name: 'Sales',
+-                // Enable data label
+-                dataLabelSettings: DataLabelSettings(isVisible: true))
+-          ]);
+-}
+-
+-class _SalesData {
+-  _SalesData(this.month, this.sales);
+-
+-  final String month;
+-  final double sales;
+-}
+Index: lib/Screens/HomePage/navbar.dart
+===================================================================
+diff --git a/lib/Screens/HomePage/navbar.dart b/lib/Screens/HomePage/navbar.dart
+deleted file mode 100644
+--- a/lib/Screens/HomePage/navbar.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,78 +0,0 @@
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-
+-import '../Doctors/item_list.dart';
+-
+-
+-class NavBar extends StatelessWidget {
+-  final user= FirebaseAuth.instance.currentUser!;
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return
+-      Drawer(
+-      backgroundColor: Color.fromRGBO(26, 59, 106, 0.8745098039215686),
+-
+-      child: ListView(
+-
+-        // Remove padding
+-        padding: EdgeInsets.zero,
+-        children: [
+-
+-          UserAccountsDrawerHeader(
+-            accountName: Text('Hi, '+ user.email!,style: TextStyle(
+-              color: Colors.white,
+-            )),
+-            accountEmail: Text('How is Your Pet Health?' ,style: TextStyle(
+-              color: Colors.white,
+-            )),
+-            /*currentAccountPicture: CircleAvatar(
+-              child: ClipOval(
+-                child: Image.asset('android/Images/logo.png',
+-                  fit: BoxFit.fitHeight,
+-                  width: 110,
+-                  height: 110,
+-                ),
+-              ),
+-            ),*/
+-            decoration: BoxDecoration(
+-              //color:Color.fromRGBO(26, 59, 106, 0.023529411764705882),
+-            ),
+-          ),
+-
+-                    ListTile(
+-            leading: Icon(Icons.ballot_outlined,color: Colors.white,),
+-            title: Text('Find Vets',style: TextStyle(
+-    color: Colors.white,
+-    )),
+-              onTap: () {
+-                Navigator.push(
+-                    context,
+-                    MaterialPageRoute(
+-                        builder: (context) {
+-                          return ItemList();
+-                        }
+-                    )
+-                );
+-              }
+-          ),
+-          ListTile(
+-            leading: Icon(Icons.settings,color: Colors.white,),
+-            title: Text('Settings',style: TextStyle(
+-              color: Colors.white,
+-            )),
+-            onTap: () => null,
+-          ),
+-          Divider(),
+-          ListTile(
+-            title: Text('Logout',style: TextStyle(
+-              color: Colors.white,
+-            )),
+-            leading: Icon(Icons.exit_to_app,color: Colors.white,),
+-            onTap: () => FirebaseAuth.instance.signOut(),
+-          ),
+-        ],
+-      ),
+-    );
+-  }
+-}
+\ No newline at end of file
+Index: lib/Screens/HomePage/SideMenu.dart
+===================================================================
+diff --git a/lib/Screens/HomePage/SideMenu.dart b/lib/Screens/HomePage/SideMenu.dart
+deleted file mode 100644
+--- a/lib/Screens/HomePage/SideMenu.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,3 +0,0 @@
+-import 'package:easy_sidemenu/easy_sidemenu.dart';
+-import 'package:flutter/material.dart';
+-
+Index: lib/Screens/Login/components/login_form.dart
+===================================================================
+diff --git a/lib/Screens/Login/components/login_form.dart b/lib/Screens/Login/components/login_form.dart
+deleted file mode 100644
+--- a/lib/Screens/Login/components/login_form.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,133 +0,0 @@
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:pps_web_admin/Screens/HomePage/home.dart';
+-
+-import '../../../components/already_have_an_account_acheck.dart';
+-import '../../../constants.dart';
+-import '../../Signup/signup_screen.dart';
+-
+-class LoginForm extends StatefulWidget {
+-  const LoginForm({Key? key}) : super(key: key);
+-
+-  @override
+-  State<LoginForm> createState() => _LoginFormState();
+-}
+-
+-class _LoginFormState extends State<LoginForm> {
+-
+-
+-  final _emailController= TextEditingController();
+-  final _passwordController= TextEditingController();
+-
+-  Future signIn() async {
+-    try {
+-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+-          email: _emailController.text.trim(),
+-          password: _passwordController.text.trim());
+-
+-
+-    } on FirebaseAuthException catch (e) {
+-      if (e.code == 'user-not-found') {
+-        print('No user found for that email.');
+-      } else if (e.code == 'wrong-password') {
+-        print('Wrong password provided for that user.');
+-      }
+-      print(e);
+-      showDialog(context: context, builder: (context)
+-      {
+-        return AlertDialog(
+-          title:Text("Note" ,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white),),
+-          elevation: 80,
+-          shape: RoundedRectangleBorder(
+-            borderRadius: BorderRadius.circular(20),
+-          ),
+-          backgroundColor: Color.fromRGBO(26, 59, 106, 1.0),
+-
+-          content:Text(e.message.toString(),style: (TextStyle(fontWeight: FontWeight.w500,fontSize: 13,color: Colors.white)),),
+-        );
+-      });
+-    }
+-  }
+-
+-  @override
+-  Future<void> dispose() async {
+-    _emailController.dispose();
+-    _passwordController.dispose();
+-    super.dispose();
+-  }
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Form(
+-      child: Column(
+-        children: [
+-          TextFormField(
+-            keyboardType: TextInputType.emailAddress,
+-            textInputAction: TextInputAction.next,
+-            cursorColor: kPrimaryColor,
+-            onSaved: (email) {},
+-            controller: _emailController,
+-            decoration: InputDecoration(
+-              hintText: "Your email",
+-              prefixIcon: Padding(
+-                padding: const EdgeInsets.all(defaultPadding),
+-                child: Icon(Icons.person),
+-              ),
+-            ),
+-          ),
+-          Padding(
+-            padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+-            child: TextFormField(
+-              textInputAction: TextInputAction.done,
+-              obscureText: true,
+-              controller: _passwordController,
+-              cursorColor: kPrimaryColor,
+-              decoration: InputDecoration(
+-                hintText: "Your password",
+-                prefixIcon: Padding(
+-                  padding: const EdgeInsets.all(defaultPadding),
+-                  child: Icon(Icons.lock),
+-                ),
+-              ),
+-            ),
+-          ),
+-          const SizedBox(height: defaultPadding),
+-          Hero(
+-            tag: "login_btn",
+-            child: ElevatedButton(
+-              onPressed: () {
+-                signIn();
+-                /*Navigator.push(
+-                    context,
+-                    MaterialPageRoute(
+-                        builder: (context)
+-                        {
+-                          return  HomePage();
+-                        }
+-                    )
+-                );*/
+-
+-              },
+-              child: Text(
+-                "Login".toUpperCase(),
+-              ),
+-            ),
+-          ),
+-          const SizedBox(height: defaultPadding),
+-         /* AlreadyHaveAnAccountCheck(
+-            press: () {
+-              Navigator.push(
+-                context,
+-                MaterialPageRoute(
+-                  builder: (context) {
+-                    return SignUpScreen();
+-                  },
+-                ),
+-              );
+-            },
+-          ),
+-        */],
+-      ),
+-    );
+-  }
+-}
+Index: lib/Screens/Login/components/login_screen_top_image.dart
+===================================================================
+diff --git a/lib/Screens/Login/components/login_screen_top_image.dart b/lib/Screens/Login/components/login_screen_top_image.dart
+deleted file mode 100644
+--- a/lib/Screens/Login/components/login_screen_top_image.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,33 +0,0 @@
+-import 'package:flutter/material.dart';
+-import 'package:flutter_svg/flutter_svg.dart';
+-import '../../../constants.dart';
+-
+-class LoginScreenTopImage extends StatelessWidget {
+-  const LoginScreenTopImage({
+-    Key? key,
+-  }) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Column(
+-      children: [
+-        Text(
+-          "Pak Pet Support Admin Login",
+-          style: TextStyle(fontWeight: FontWeight.bold),
+-        ),
+-        SizedBox(height: defaultPadding * 2),
+-        Row(
+-          children: [
+-            const Spacer(),
+-            Expanded(
+-              flex: 8,
+-              child: Image.asset('android/Images/logo.png'),
+-            ),
+-            const Spacer(),
+-          ],
+-        ),
+-        SizedBox(height: defaultPadding * 2),
+-      ],
+-    );
+-  }
+-}
+\ No newline at end of file
+Index: lib/Screens/Login/login_screen.dart
+===================================================================
+diff --git a/lib/Screens/Login/login_screen.dart b/lib/Screens/Login/login_screen.dart
+deleted file mode 100644
+--- a/lib/Screens/Login/login_screen.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,77 +0,0 @@
+-import 'package:flutter/material.dart';
+-import 'package:pps_web_admin/constants.dart';
+-
+-import '../../components/background.dart';
+-import '../../responsive.dart';
+-import 'components/login_form.dart';
+-import 'components/login_screen_top_image.dart';
+-
+-class LoginScreen extends StatefulWidget {
+-  const LoginScreen({Key? key}) : super(key: key);
+-
+-  @override
+-  State<LoginScreen> createState() => _LoginScreenState();
+-}
+-
+-class _LoginScreenState extends State<LoginScreen> {
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Background(
+-      child: SingleChildScrollView(
+-        child: Responsive(
+-          mobile: const MobileLoginScreen(),
+-          desktop: Row(
+-            children: [
+-              const Expanded(
+-                child: LoginScreenTopImage(),
+-              ),
+-              Expanded(
+-                child: Row(
+-                  mainAxisAlignment: MainAxisAlignment.center,
+-                  children:  [
+-                    SizedBox(
+-                      width: 450,
+-                      child: LoginForm(),
+-                    ),
+-                /*Container(
+-                  height: 100,
+-                  margin: const EdgeInsets.only(top: 30, left: 5),
+-                  child: Image.asset('android/Images/logo.png'),),
+-*/
+-                  ],
+-                ),
+-              ),
+-            ],
+-          ),
+-        ),
+-      ),
+-    );
+-  }
+-}
+-
+-class MobileLoginScreen extends StatelessWidget {
+-  const MobileLoginScreen({
+-    Key? key,
+-  }) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Column(
+-      mainAxisAlignment: MainAxisAlignment.center,
+-      children: <Widget>[
+-        const LoginScreenTopImage(),
+-        Row(
+-          children: const [
+-            Spacer(),
+-            Expanded(
+-              flex: 8,
+-              child: LoginForm(),
+-            ),
+-            Spacer(),
+-          ],
+-        ),
+-      ],
+-    );
+-  }
+-}
+Index: lib/Screens/Signup/components/or_divider.dart
+===================================================================
+diff --git a/lib/Screens/Signup/components/or_divider.dart b/lib/Screens/Signup/components/or_divider.dart
+deleted file mode 100644
+--- a/lib/Screens/Signup/components/or_divider.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,41 +0,0 @@
+-import 'package:flutter/material.dart';
+-
+-import '../../../constants.dart';
+-
+-class OrDivider extends StatelessWidget {
+-  const OrDivider({Key? key}) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    Size size = MediaQuery.of(context).size;
+-    return Container(
+-      margin: EdgeInsets.symmetric(vertical: size.height * 0.02),
+-      width: size.width * 0.8,
+-      child: Row(
+-        children: <Widget>[
+-          buildDivider(),
+-          const Padding(
+-            padding: EdgeInsets.symmetric(horizontal: 10),
+-            child: Text(
+-              "OR",
+-              style: TextStyle(
+-                color: kPrimaryColor,
+-                fontWeight: FontWeight.w600,
+-              ),
+-            ),
+-          ),
+-          buildDivider(),
+-        ],
+-      ),
+-    );
+-  }
+-
+-  Expanded buildDivider() {
+-    return const Expanded(
+-      child: Divider(
+-        color: Color(0xFFD9D9D9),
+-        height: 1.5,
+-      ),
+-    );
+-  }
+-}
+Index: lib/Screens/Signup/components/sign_up_top_image.dart
+===================================================================
+diff --git a/lib/Screens/Signup/components/sign_up_top_image.dart b/lib/Screens/Signup/components/sign_up_top_image.dart
+deleted file mode 100644
+--- a/lib/Screens/Signup/components/sign_up_top_image.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,34 +0,0 @@
+-import 'package:flutter/material.dart';
+-import 'package:flutter_svg/flutter_svg.dart';
+-
+-import '../../../constants.dart';
+-
+-class SignUpScreenTopImage extends StatelessWidget {
+-  const SignUpScreenTopImage({
+-    Key? key,
+-  }) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Column(
+-      children: [
+-        Text(
+-          "Pak Pet Support Admin Sign Up".toUpperCase(),
+-          style: TextStyle(fontWeight: FontWeight.bold),
+-        ),
+-        SizedBox(height: defaultPadding),
+-        Row(
+-          children: [
+-            const Spacer(),
+-            Expanded(
+-              flex: 8,
+-              child: Image.asset('android/Images/logo.png'),
+-            ),
+-            const Spacer(),
+-          ],
+-        ),
+-        SizedBox(height: defaultPadding),
+-      ],
+-    );
+-  }
+-}
+Index: lib/Screens/Signup/components/signup_form.dart
+===================================================================
+diff --git a/lib/Screens/Signup/components/signup_form.dart b/lib/Screens/Signup/components/signup_form.dart
+deleted file mode 100644
+--- a/lib/Screens/Signup/components/signup_form.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,106 +0,0 @@
+-import 'package:cloud_firestore/cloud_firestore.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-
+-import '../../../components/already_have_an_account_acheck.dart';
+-import '../../../constants.dart';
+-import '../../Login/login_screen.dart';
+-
+-class SignUpForm extends StatefulWidget {
+-  const SignUpForm({Key? key}) : super(key: key);
+-
+-  @override
+-  State<SignUpForm> createState() => _SignUpFormState();
+-}
+-
+-class _SignUpFormState extends State<SignUpForm> {
+-  bool _isHidden = true;
+-//CONTROLERS FOR INPUTS
+-  final _emailController= TextEditingController();
+-  final _passwordController= TextEditingController();
+-  final _confirmpasswordController= TextEditingController();
+-
+-  Future<void> signUp() async {
+-    final User? currentUser = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text)).user;
+-    FirebaseFirestore.instance.collection("login").doc(currentUser?.uid).set({
+-      "uid": currentUser?.uid,
+-      "Profile": "admin"
+-
+-    },
+-    );
+-  }
+-// CONFIRMED PASSWORD CODE
+-  bool passwordConfirmed(){
+-    if(_passwordController.text.trim() == _confirmpasswordController.text.trim())
+-    {
+-      return true;
+-    }
+-    else{
+-      return false;
+-    }
+-  }
+-  @override
+-  void _togglePasswordView() {
+-    setState(() {
+-      _isHidden = !_isHidden;
+-    });
+-  }
+-  @override
+-  Widget build(BuildContext context) {
+-    return Form(
+-      child: Column(
+-        children: [
+-          TextFormField(
+-            keyboardType: TextInputType.emailAddress,
+-            textInputAction: TextInputAction.next,
+-            cursorColor: kPrimaryColor,
+-            onSaved: (email) {},
+-            controller: _emailController,
+-            decoration: InputDecoration(
+-              hintText: "Your email",
+-              prefixIcon: Padding(
+-                padding: const EdgeInsets.all(defaultPadding),
+-                child: Icon(Icons.person),
+-              ),
+-            ),
+-          ),
+-          Padding(
+-            padding: const EdgeInsets.symmetric(vertical: defaultPadding),
+-            child: TextFormField(
+-              textInputAction: TextInputAction.done,
+-              obscureText: true,
+-              cursorColor: kPrimaryColor,
+-              controller: _passwordController,
+-              decoration: InputDecoration(
+-                hintText: "Your password",
+-                prefixIcon: Padding(
+-                  padding: const EdgeInsets.all(defaultPadding),
+-                  child: Icon(Icons.lock),
+-                ),
+-              ),
+-            ),
+-          ),
+-          const SizedBox(height: defaultPadding / 2),
+-          ElevatedButton(
+-            onPressed: () {},
+-            child: Text("Sign Up".toUpperCase()),
+-          ),
+-          const SizedBox(height: defaultPadding),
+-          AlreadyHaveAnAccountCheck(
+-            login: false,
+-            press: () {
+-              Navigator.push(
+-                context,
+-                MaterialPageRoute(
+-                  builder: (context) {
+-                    return LoginScreen();
+-                  },
+-                ),
+-              );
+-            },
+-          ),
+-        ],
+-      ),
+-    );
+-  }
+-}
+Index: lib/Screens/Signup/components/socal_sign_up.dart
+===================================================================
+diff --git a/lib/Screens/Signup/components/socal_sign_up.dart b/lib/Screens/Signup/components/socal_sign_up.dart
+deleted file mode 100644
+--- a/lib/Screens/Signup/components/socal_sign_up.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,36 +0,0 @@
+-// import 'package:flutter/material.dart';
+-
+-// import '../../../screens/Signup/components/or_divider.dart';
+-// import '../../../screens/Signup/components/social_icon.dart';
+-
+-// class SocalSignUp extends StatelessWidget {
+-//   const SocalSignUp({
+-//     Key? key,
+-//   }) : super(key: key);
+-
+-//   @override
+-//   Widget build(BuildContext context) {
+-//     return Column(
+-//       children: [
+-//         const OrDivider(),
+-//         Row(
+-//           mainAxisAlignment: MainAxisAlignment.center,
+-//           children: <Widget>[
+-//             SocalIcon(
+-//               iconSrc: "assets/icons/facebook.svg",
+-//               press: () {},
+-//             ),
+-//             SocalIcon(
+-//               iconSrc: "assets/icons/twitter.svg",
+-//               press: () {},
+-//             ),
+-//             SocalIcon(
+-//               iconSrc: "assets/icons/google-plus.svg",
+-//               press: () {},
+-//             ),
+-//           ],
+-//         ),
+-//       ],
+-//     );
+-//   }
+-// }
+\ No newline at end of file
+Index: lib/Screens/Signup/components/social_icon.dart
+===================================================================
+diff --git a/lib/Screens/Signup/components/social_icon.dart b/lib/Screens/Signup/components/social_icon.dart
+deleted file mode 100644
+--- a/lib/Screens/Signup/components/social_icon.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,37 +0,0 @@
+-import 'package:flutter/material.dart';
+-import 'package:flutter_svg/flutter_svg.dart';
+-
+-import '../../../constants.dart';
+-
+-class SocalIcon extends StatelessWidget {
+-  final String? iconSrc;
+-  final Function? press;
+-  const SocalIcon({
+-    Key? key,
+-    this.iconSrc,
+-    this.press,
+-  }) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return GestureDetector(
+-      onTap: press as void Function()?,
+-      child: Container(
+-        margin: const EdgeInsets.symmetric(horizontal: 10),
+-        padding: const EdgeInsets.all(20),
+-        decoration: BoxDecoration(
+-          border: Border.all(
+-            width: 2,
+-            color: kPrimaryLightColor,
+-          ),
+-          shape: BoxShape.circle,
+-        ),
+-        child: SvgPicture.asset(
+-          iconSrc!,
+-          height: 20,
+-          width: 20,
+-        ),
+-      ),
+-    );
+-  }
+-}
+Index: lib/Screens/Signup/signup_screen.dart
+===================================================================
+diff --git a/lib/Screens/Signup/signup_screen.dart b/lib/Screens/Signup/signup_screen.dart
+deleted file mode 100644
+--- a/lib/Screens/Signup/signup_screen.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,69 +0,0 @@
+-import 'package:flutter/material.dart';
+-import '../../components/background.dart';
+-import '../../constants.dart';
+-import '../../responsive.dart';
+-import 'components/sign_up_top_image.dart';
+-import 'components/signup_form.dart';
+-import 'components/socal_sign_up.dart';
+-
+-class SignUpScreen extends StatelessWidget {
+-  const SignUpScreen({Key? key}) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Background(
+-      child: SingleChildScrollView(
+-        child: Responsive(
+-          mobile: const MobileSignupScreen(),
+-          desktop: Row(
+-            children: [
+-              const Expanded(
+-                child: SignUpScreenTopImage(),
+-              ),
+-              Expanded(
+-                child: Column(
+-                  mainAxisAlignment: MainAxisAlignment.center,
+-                  children: const [
+-                    SizedBox(
+-                      width: 450,
+-                      child: SignUpForm(),
+-                    ),
+-                    SizedBox(height: defaultPadding / 2),
+-                    // SocalSignUp()
+-                  ],
+-                ),
+-              )
+-            ],
+-          ),
+-        ),
+-      ),
+-    );
+-  }
+-}
+-
+-class MobileSignupScreen extends StatelessWidget {
+-  const MobileSignupScreen({
+-    Key? key,
+-  }) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Column(
+-      mainAxisAlignment: MainAxisAlignment.center,
+-      children: <Widget>[
+-        const SignUpScreenTopImage(),
+-        Row(
+-          children: const [
+-            Spacer(),
+-            Expanded(
+-              flex: 8,
+-              child: SignUpForm(),
+-            ),
+-            Spacer(),
+-          ],
+-        ),
+-        // const SocalSignUp()
+-      ],
+-    );
+-  }
+-}
+Index: lib/Screens/user_view_screen/user_view_screen.dart
+===================================================================
+diff --git a/lib/Screens/user_view_screen/user_view_screen.dart b/lib/Screens/user_view_screen/user_view_screen.dart
+deleted file mode 100644
+--- a/lib/Screens/user_view_screen/user_view_screen.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,250 +0,0 @@
+-import 'package:easy_sidemenu/easy_sidemenu.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:flutter_screenutil/flutter_screenutil.dart';
+-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+-import 'package:pps_web_admin/Screens/HomePage/home.dart';
+-import 'package:pps_web_admin/components/widget/dashboard_name.dart';
+-import 'package:pps_web_admin/components/widget/drawer.dart';
+-import 'package:pps_web_admin/constants.dart';
+-import 'package:pps_web_admin/model/bookings.dart';
+-import 'package:pps_web_admin/model/users_model.dart';
+-import 'package:pps_web_admin/model/vet.dart';
+-import 'package:syncfusion_flutter_charts/charts.dart';
+-
+-import '../Doctors/item_list.dart';
+-
+-class UserViewScreen extends StatefulWidget {
+-  Users user;
+-  UserViewScreen({Key? key,required this.user}) : super(key: key);
+-
+-  @override
+-  _UserViewScreenState createState() => _UserViewScreenState();
+-}
+-
+-class _UserViewScreenState extends State<UserViewScreen> {
+-  // final user= FirebaseAuth.instance.currentUser!;
+-  List<Bookings> booking=[];
+-  List<Vets> vet=[];
+-  @override
+-  void initState() {
+-    setState(() {
+-      booking =
+-          bookingList.where((booking) => booking.userId == widget.user.uid).toList();
+-      booking.forEach((element) {
+-        vet.add(vetList.where((vets) => vets.uid == element.serviceId).toList().first);
+-      });
+-      print(booking);
+-    });
+-    super.initState();
+-  }
+-  @override
+-  Widget build(BuildContext context) {
+-    return Scaffold(
+-        body: Row(
+-          children: [
+-            CustomDrawer(),
+-            SizedBox(
+-              width: 0.02.sw,
+-            ),
+-            Expanded(
+-              flex: 5,
+-              child: Column(
+-                children: [
+-                  DashboardName(title: "Users View",),
+-                  SizedBox(height: 0.02.sh,),
+-                  Expanded(
+-                    child: Column(children: [
+-                      Container(width: 200,height: 200,decoration: BoxDecoration(
+-                          image: DecorationImage(image: NetworkImage(widget.user.profileImg.toString()),fit: BoxFit.cover),
+-                          color: Colors.red,
+-                          borderRadius: BorderRadius.circular(20)
+-                      ),),
+-                      Padding(
+-                        padding: REdgeInsets.only(left: 20.0,right: 40),
+-                        child: ListTile(
+-                        title: Text("${widget.user.firstname.toString()}"),
+-                        subtitle:Text("${widget.user.email.toString()}"),
+-                          trailing: Text("Wallet\n${widget.user.wallet.toString()}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),textAlign: TextAlign.center,),
+-                        ),
+-                      ),
+-                      Text("Appointments",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+-                      SizedBox(height: 10,),
+-                      booking.length>0?
+-                      Padding(
+-                        padding: const EdgeInsets.all(8.0),
+-                        child: Table(
+-                          children: [
+-                            TableRow(
+-                              children: [
+-                                // start date
+-                                // end date
+-                                // fee
+-                                // status
+-                                // Vet name
+-                                // vet clinic
+-                                // sr no
+-
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Sr No.',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Vet Name.',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Vet Type',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Status',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Fee',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Date',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                                TableCell(
+-                                  child: Container(
+-                                    padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                    child: Center(child: Text('Time',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+-                                  ),
+-                                ),
+-                              ],
+-                              decoration: BoxDecoration(color: Colors.grey.shade300),
+-                            ),
+-                            for(int i=0;i<booking.length;i++)
+-                              TableRow(
+-                                children: [
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text(i.toString())),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text(vet[i].name.toString())),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text(vet[i].profileType.toString())),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text(booking[i].userName.toString(),style: TextStyle(color:booking[i].userName.toString()=="Canceled"?Colors.red:booking[i].userName.toString()=="Completed"?Colors.green:Colors.blue ),)),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text(booking[i].servicePrice.toString())),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text("${DateTime.tryParse(booking[i].bookingStart.toString())!.day}/${DateTime.tryParse(booking[i].bookingStart.toString())!.month}/${DateTime.tryParse(booking[i].bookingStart.toString())!.year}")),
+-                                    ),
+-                                  ),
+-                                  TableCell(
+-                                    child: Container(
+-                                      padding: EdgeInsets.only(top: 20,bottom: 20),
+-                                      child: Center(child: Text("${DateTime.tryParse(booking[i].bookingStart.toString())!.hour}:${DateTime.tryParse(booking[i].bookingStart.toString())!.minute==0?"00":DateTime.tryParse(booking[i].bookingStart.toString())!.minute}")),
+-                                    ),
+-                                  ),
+-                                ],
+-                                decoration: BoxDecoration(color: Colors.grey.shade300),
+-                              ),
+-                          ],
+-                        ),
+-                      ):
+-                      Container(),
+-                    ],),
+-                  ),
+-                ],
+-              ),
+-            ),
+-          ],
+-        ));
+-  }
+-  Widget _StackBgCard() => Column(
+-    children: [
+-      Expanded(
+-          child: Container(
+-            decoration: BoxDecoration(
+-                image: DecorationImage(
+-                    image: AssetImage("assets/images/doctor.jpg"),
+-                    fit: BoxFit.cover)),
+-            child: Container(
+-              color: Colors.blue.withOpacity(0.5),
+-            ),
+-          )),
+-      Expanded(
+-          child: Container(
+-            color: Colors.white,
+-          )),
+-    ],
+-  );
+-
+-
+-
+-  Widget _doctorsProfile({required int index})=>  Card(
+-    margin: REdgeInsets.all(10),
+-    color: Colors.white,
+-    child: ListTile(
+-      contentPadding: REdgeInsets.all(10),
+-      visualDensity: const VisualDensity(vertical: 4),
+-      leading: Container(
+-        width: 100,
+-        height: 100,
+-        decoration: BoxDecoration(
+-            borderRadius: BorderRadius.circular(10),
+-            image: DecorationImage(
+-                image: NetworkImage(userList[index]
+-                    .profileImg
+-                    .toString()),fit: BoxFit.cover)),
+-      ),
+-      title: Text(userList[index].firstname.toString()),
+-      subtitle: Text(userList[index].email.toString()),
+-    ),
+-  );
+-
+-
+-
+-  Widget _doctorStats({required int index})=> Container(
+-    height: 0.1.sh,
+-    margin: REdgeInsets.all(10),
+-    child: Row(
+-      crossAxisAlignment: CrossAxisAlignment.center,
+-      children: [
+-        Expanded(child: Card(child: Center(child: ListTile(title: Text(userList[index].phnumber.toString()),subtitle: Text("Phone number"),),),)),
+-        SizedBox(width:10,),
+-        Expanded(child: Card(child: Center(child: ListTile(title: Text(userList[index].cNIC.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("Doctors Qualification"),),),)),
+-        SizedBox(width:10,),
+-      ],),
+-  );
+-
+-}
+Index: lib/Screens/users/user_screen.dart
+===================================================================
+diff --git a/lib/Screens/users/user_screen.dart b/lib/Screens/users/user_screen.dart
+deleted file mode 100644
+--- a/lib/Screens/users/user_screen.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,147 +0,0 @@
+-import 'package:easy_sidemenu/easy_sidemenu.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:flutter_screenutil/flutter_screenutil.dart';
+-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+-import 'package:pps_web_admin/Screens/HomePage/home.dart';
+-import 'package:pps_web_admin/Screens/user_view_screen/user_view_screen.dart';
+-import 'package:pps_web_admin/components/widget/dashboard_name.dart';
+-import 'package:pps_web_admin/components/widget/drawer.dart';
+-import 'package:pps_web_admin/constants.dart';
+-import 'package:pps_web_admin/model/vet.dart';
+-import 'package:syncfusion_flutter_charts/charts.dart';
+-
+-import '../Doctors/item_list.dart';
+-
+-class UserScreen extends StatefulWidget {
+-  UserScreen({Key? key}) : super(key: key);
+-
+-  @override
+-  _UserScreenState createState() => _UserScreenState();
+-}
+-
+-class _UserScreenState extends State<UserScreen> {
+-  // final user= FirebaseAuth.instance.currentUser!;
+-  @override
+-  Widget build(BuildContext context) {
+-    return Scaffold(
+-        body: Row(
+-          children: [
+-            CustomDrawer(),
+-            SizedBox(
+-              width: 0.02.sw,
+-            ),
+-            Expanded(
+-              flex: 5,
+-              child: Column(
+-                children: [
+-                  DashboardName(title: "Users Dashboard",),
+-                  Expanded(
+-                    child: GridView.builder(
+-                      padding: REdgeInsets.all(10),
+-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+-                          crossAxisSpacing: 10,
+-                          mainAxisSpacing: 10,
+-                          crossAxisCount: 3),
+-                      itemBuilder: (context, index) {
+-                        return Card(
+-                          elevation: 8,
+-                          shape: RoundedRectangleBorder(
+-                              borderRadius: BorderRadius.circular(10)),
+-                          child: Stack(
+-                            children: [
+-                              _StackBgCard(),
+-                              Column(
+-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+-                                children: [
+-                                  _doctorsProfile(index: index),
+-                                  _doctorStats(index: index),
+-                                  Container(
+-                                    height: 0.1.sh,
+-                                    margin: REdgeInsets.all(10),
+-                                    child: Center(child: ElevatedButton(
+-                                      style: ButtonStyle(
+-                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+-                                              RoundedRectangleBorder(
+-                                                borderRadius: BorderRadius.circular(8.0),
+-                                              )
+-                                          )
+-                                      ),
+-                                      onPressed: () {
+-                                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserViewScreen(user: userList[index],)));
+-                                      }, child: Text("View Profile"),
+-                                    ),),
+-                                  ),
+-                                ],
+-                              ),
+-                            ],
+-                          ),
+-                        );
+-                      },
+-                      itemCount: userList.length,
+-                    ),
+-                  ),
+-                ],
+-              ),
+-            ),
+-          ],
+-        ));
+-  }
+-  Widget _StackBgCard() => Column(
+-    children: [
+-      Expanded(
+-          child: Container(
+-            decoration: BoxDecoration(
+-                image: DecorationImage(
+-                    image: AssetImage("assets/images/doctor.jpg"),
+-                    fit: BoxFit.cover)),
+-            child: Container(
+-              color: Colors.blue.withOpacity(0.5),
+-            ),
+-          )),
+-      Expanded(
+-          child: Container(
+-            color: Colors.white,
+-          )),
+-    ],
+-  );
+-
+-
+-
+-  Widget _doctorsProfile({required int index})=>  Card(
+-    margin: REdgeInsets.all(10),
+-    color: Colors.white,
+-    child: ListTile(
+-      contentPadding: REdgeInsets.all(10),
+-      visualDensity: const VisualDensity(vertical: 4),
+-      leading: Container(
+-        width: 100,
+-        height: 100,
+-        decoration: BoxDecoration(
+-            borderRadius: BorderRadius.circular(10),
+-            image: DecorationImage(
+-                image: NetworkImage(userList[index]
+-                    .profileImg
+-                    .toString()),fit: BoxFit.cover)),
+-      ),
+-      title: Text(userList[index].firstname.toString()),
+-      subtitle: Text(userList[index].email.toString()),
+-    ),
+-  );
+-
+-
+-
+-  Widget _doctorStats({required int index})=> Container(
+-    height: 0.1.sh,
+-    margin: REdgeInsets.all(10),
+-    child: Row(
+-      crossAxisAlignment: CrossAxisAlignment.center,
+-      children: [
+-        Expanded(child: Card(child: Center(child: ListTile(title: Text(userList[index].phnumber.toString()),subtitle: Text("Phone number"),),),)),
+-        SizedBox(width:10,),
+-        Expanded(child: Card(child: Center(child: ListTile(title: Text(userList[index].cNIC.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("User CNIC"),),),)),
+-        SizedBox(width:10,),
+-      ],),
+-  );
+-
+-}
+Index: lib/Screens/Welcome/components/login_signup_btn.dart
+===================================================================
+diff --git a/lib/Screens/Welcome/components/login_signup_btn.dart b/lib/Screens/Welcome/components/login_signup_btn.dart
+deleted file mode 100644
+--- a/lib/Screens/Welcome/components/login_signup_btn.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,56 +0,0 @@
+-import 'package:flutter/material.dart';
+-
+-import '../../../constants.dart';
+-import '../../Login/login_screen.dart';
+-import '../../Signup/signup_screen.dart';
+-
+-class LoginAndSignupBtn extends StatelessWidget {
+-  const LoginAndSignupBtn({
+-    Key? key,
+-  }) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Column(
+-      children: [
+-        Hero(
+-          tag: "login_btn",
+-          child: ElevatedButton(
+-            onPressed: () {
+-              Navigator.push(
+-                context,
+-                MaterialPageRoute(
+-                  builder: (context) {
+-                    return LoginScreen();
+-                  },
+-                ),
+-              );
+-            },
+-            child: Text(
+-              "Login".toUpperCase(),
+-            ),
+-          ),
+-        ),
+-        const SizedBox(height: 16),
+-        ElevatedButton(
+-          onPressed: () {
+-            Navigator.push(
+-              context,
+-              MaterialPageRoute(
+-                builder: (context) {
+-                  return SignUpScreen();
+-                },
+-              ),
+-            );
+-          },
+-          style: ElevatedButton.styleFrom(
+-              primary: kPrimaryLightColor, elevation: 0),
+-          child: Text(
+-            "Sign Up".toUpperCase(),
+-            style: TextStyle(color: Colors.black),
+-          ),
+-        ),
+-      ],
+-    );
+-  }
+-}
+Index: lib/Screens/Welcome/components/welcome_image.dart
+===================================================================
+diff --git a/lib/Screens/Welcome/components/welcome_image.dart b/lib/Screens/Welcome/components/welcome_image.dart
+deleted file mode 100644
+--- a/lib/Screens/Welcome/components/welcome_image.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,34 +0,0 @@
+-import 'package:flutter/material.dart';
+-import 'package:flutter_svg/flutter_svg.dart';
+-
+-import '../../../constants.dart';
+-
+-class WelcomeImage extends StatelessWidget {
+-  const WelcomeImage({
+-    Key? key,
+-  }) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Column(
+-      children: [
+-        Text(
+-          "Pak Pet Support Admin",
+-          style: TextStyle(fontWeight: FontWeight.bold),
+-        ),
+-        SizedBox(height: defaultPadding * 2),
+-        Row(
+-          children: [
+-            Spacer(),
+-            Expanded(
+-              flex: 8,
+-              child: Image.asset('android/Images/logo.png'),
+-            ),
+-            Spacer(),
+-          ],
+-        ),
+-        SizedBox(height: defaultPadding * 2),
+-      ],
+-    );
+-  }
+-}
+\ No newline at end of file
+Index: lib/Screens/Welcome/welcome_screen.dart
+===================================================================
+diff --git a/lib/Screens/Welcome/welcome_screen.dart b/lib/Screens/Welcome/welcome_screen.dart
+deleted file mode 100644
+--- a/lib/Screens/Welcome/welcome_screen.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,74 +0,0 @@
+-import 'package:flutter/material.dart';
+-import 'package:pps_web_admin/constants.dart';
+-
+-import '../../components/background.dart';
+-import '../../responsive.dart';
+-import 'components/login_signup_btn.dart';
+-import 'components/welcome_image.dart';
+-
+-class WelcomeScreen extends StatefulWidget {
+-  const WelcomeScreen({Key? key}) : super(key: key);
+-
+-  @override
+-  State<WelcomeScreen> createState() => _WelcomeScreenState();
+-}
+-
+-class _WelcomeScreenState extends State<WelcomeScreen> {
+-  @override
+-  Widget build(BuildContext context) {
+-    return Background(
+-      child: SingleChildScrollView(
+-        child: SafeArea(
+-          child: Responsive(
+-            desktop: Row(
+-              mainAxisAlignment: MainAxisAlignment.end,
+-              children: [
+-                const Expanded(
+-                  child: WelcomeImage(),
+-                ),
+-                Expanded(
+-                  child: Row(
+-                    mainAxisAlignment: MainAxisAlignment.center,
+-                    children: const [
+-                      SizedBox(
+-                        width: 450,
+-                        child: LoginAndSignupBtn(),
+-                      ),
+-                    ],
+-                  ),
+-                ),
+-              ],
+-            ),
+-            mobile: const MobileWelcomeScreen(),
+-          ),
+-        ),
+-      ),
+-    );
+-  }
+-}
+-
+-class MobileWelcomeScreen extends StatelessWidget {
+-  const MobileWelcomeScreen({
+-    Key? key,
+-  }) : super(key: key);
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return Column(
+-      mainAxisAlignment: MainAxisAlignment.center,
+-      children: <Widget>[
+-        const WelcomeImage(),
+-        Row(
+-          children: const [
+-            Spacer(),
+-            Expanded(
+-              flex: 8,
+-              child: LoginAndSignupBtn(),
+-            ),
+-            Spacer(),
+-          ],
+-        ),
+-      ],
+-    );
+-  }
+-}
+Index: lib/clinics.dart
+===================================================================
+diff --git a/lib/clinics.dart b/lib/clinics.dart
+deleted file mode 100644
+--- a/lib/clinics.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,29 +0,0 @@
+-import 'package:flutter/material.dart';
+-
+-class MyTable extends StatelessWidget {
+-  final List<Map<String, dynamic>> data;
+-
+-  MyTable({required this.data});
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    return DataTable(
+-      columns: [
+-        DataColumn(label: Text('Name')),
+-        DataColumn(label: Text('Age')),
+-        DataColumn(label: Text('Email')),
+-      ],
+-      rows: data
+-          .map(
+-            (item) => DataRow(
+-          cells: [
+-            DataCell(Text(item['name'])),
+-            DataCell(Text(item['age'].toString())),
+-            DataCell(Text(item['email'])),
+-          ],
+-        ),
+-      )
+-          .toList(),
+-    );
+-  }
+-}
+Index: lib/constants.dart
+===================================================================
+diff --git a/lib/constants.dart b/lib/constants.dart
+deleted file mode 100644
+--- a/lib/constants.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,124 +0,0 @@
+-import 'package:cloud_firestore/cloud_firestore.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:pps_web_admin/model/bookings.dart';
+-import 'package:pps_web_admin/model/users_model.dart';
+-import 'package:pps_web_admin/model/vet.dart';
+-
+-const kPrimaryColor = Color(0xDF1A3B6A);
+-const kPrimaryLightColor = Color(0xFFE6E7FF);
+-
+-const double defaultPadding = 16.0;
+-
+-  // final user= FirebaseAuth.instance.currentUser!;
+-  int userCount = 0;
+-  int vetCount = 0;
+-  int clinicCount = 0;
+-  List<Bookings> bookingList = [];
+-  int bookingCount = 0;
+-  List<Vets> vetList = [];
+-  List<Vets> newVetList = [];
+-  List<Users> userList = [];
+-
+-  Future<int> getUser() async{
+-    final questionsRef = FirebaseFirestore.instance.collection('user');
+-    final querySnapshot =await  questionsRef.get();
+-    final doc= querySnapshot.docs.length;
+-    return doc;
+-}
+-  Future<int> getVets() async{
+-    final questionsRef = FirebaseFirestore.instance.collection('vets');
+-    final querySnapshot =await  questionsRef.get();
+-    final doc= querySnapshot.docs.length;
+-    return doc;
+-}
+-  Future<int> getClinic() async{
+-    final questionsRef = FirebaseFirestore.instance.collection('Clinics');
+-    final querySnapshot =await  questionsRef.get();
+-    final doc= querySnapshot.docs.length;
+-    return doc;
+-}
+-  Future<List<Vets>> fetchDoctors() async {
+-    final questionsRef = FirebaseFirestore.instance.collection('vets').where("ProfileStatus", isEqualTo: "Approved");
+-    final querySnapshot = await questionsRef.get();
+-    return querySnapshot.docs.map((doc) {
+-      final data = doc.data();
+-      return Vets(
+-        cnic: data["cnic"],
+-        description: data["description"],
+-        email: data["email"],
+-        name: data["name"],
+-        phoneNumber: data["phone number"],
+-        profileImg: data["profileImg"],
+-        profileStatus: data["profileStatus"],
+-        profileType: data["ProfileType"],
+-        profileUnapprovalReason:data["profileUnapprovalReason"] ,
+-        qualification: data["qualification"],
+-        specialization: data["specialization"],
+-        uid: data["uid"],
+-        price: data["price"],
+-        vetLiceance: data["VetLiceance"],
+-        year: data["year"],
+-      );
+-    }).toList();
+-  }
+-  Future<List<Vets>> fetchNewDoctors() async {
+-    final questionsRef = FirebaseFirestore.instance.collection('vets').where("ProfileStatus", isEqualTo: "Not Approved");
+-    final querySnapshot = await questionsRef.get();
+-    return querySnapshot.docs.map((doc) {
+-      final data = doc.data();
+-      return Vets(
+-        cnic: data["cnic"],
+-        description: data["description"],
+-        email: data["email"],
+-        name: data["name"],
+-        phoneNumber: data["phoneNumber"],
+-        profileImg: data["profileImg"],
+-        profileStatus: data["profileStatus"],
+-        profileType: data["profileType"],
+-        profileUnapprovalReason:data["profileUnapprovalReason"] ,
+-        qualification: data["qualification"],
+-        specialization: data["specialization"],
+-        uid: data["uid"],
+-        price: data["price"],
+-        vetLiceance: data["vetLiceance"],
+-        year: data["year"],
+-      );
+-    }).toList();
+-  }
+-  Future<List<Users>> fetchUsers() async {
+-    final questionsRef = FirebaseFirestore.instance.collection('user');
+-    final querySnapshot = await questionsRef.get();
+-    return querySnapshot.docs.map((doc) {
+-      final data = doc.data();
+-      return Users(
+-        cNIC: data["CNIC"],
+-        email: data["email"],
+-        firstname: data["firstname"],
+-        lastname: data["lastname"],
+-        wallet: data["wallet"],
+-        phnumber: data["phoneNumber"],
+-        profileImg: data["profileImg"],
+-        uid: data["uid"],
+-      );
+-    }).toList();
+-  }
+-  Future<List<Bookings>> getBookings() async {
+-    final questionsRef = FirebaseFirestore.instance.collection('booking');
+-    final querySnapshot = await questionsRef.get();
+-    return querySnapshot.docs.map((doc) {
+-      final data = doc.data();
+-      return Bookings(
+-        bookingEnd: data["bookingEnd"],
+-        bookingStart: data["bookingStart"],
+-        serviceDuration: data["serviceDuration"],
+-        serviceId: data["serviceId"],
+-        serviceName: data["serviceName"],
+-        servicePrice: data["servicePrice"],
+-        userEmail: data["userEmail"],
+-        userId: data["userId"],
+-        userName: data["userName"],
+-         userPhoneNumber: data["userPhoneNumber"],
+-      );
+-    }).toList();
+-  }
+\ No newline at end of file
+Index: lib/generated_plugin_registrant.dart
+===================================================================
+diff --git a/lib/generated_plugin_registrant.dart b/lib/generated_plugin_registrant.dart
+deleted file mode 100644
+--- a/lib/generated_plugin_registrant.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,21 +0,0 @@
+-//
+-// Generated file. Do not edit.
+-//
+-
+-// ignore_for_file: directives_ordering
+-// ignore_for_file: lines_longer_than_80_chars
+-// ignore_for_file: depend_on_referenced_packages
+-
+-import 'package:cloud_firestore_web/cloud_firestore_web.dart';
+-import 'package:firebase_auth_web/firebase_auth_web.dart';
+-import 'package:firebase_core_web/firebase_core_web.dart';
+-
+-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+-
+-// ignore: public_member_api_docs
+-void registerPlugins(Registrar registrar) {
+-  FirebaseFirestoreWeb.registerWith(registrar);
+-  FirebaseAuthWeb.registerWith(registrar);
+-  FirebaseCoreWeb.registerWith(registrar);
+-  registrar.registerMessageHandler();
+-}
+Index: lib/main.dart
+===================================================================
+diff --git a/lib/main.dart b/lib/main.dart
+deleted file mode 100644
+--- a/lib/main.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,59 +0,0 @@
+-import 'package:firebase_core/firebase_core.dart';
+-import 'package:flutter/material.dart';
+-import 'package:flutter_screenutil/flutter_screenutil.dart';
+-import 'package:pps_web_admin/Screens/HomePage/home.dart';
+-
+-import 'Screens/Welcome/welcome_screen.dart';
+-import 'constants.dart';
+-import 'mainpage2.dart';
+-
+-Future main() async {
+-  WidgetsFlutterBinding.ensureInitialized();
+-  await Firebase.initializeApp();
+-  runApp(MyApp());
+-}
+-class MyApp extends StatelessWidget {
+-  const MyApp({Key? key}) : super(key: key);
+-
+-  // This widget is the root of your application.
+-  @override
+-  Widget build(BuildContext context) {
+-    return ScreenUtilInit(
+-        designSize: const Size(360, 690),
+-        minTextAdapt: true,
+-        splitScreenMode: true,
+-      builder: (context, child) {
+-        return MaterialApp(
+-          debugShowCheckedModeBanner: false,
+-          title: 'Flutter Auth',
+-          theme: ThemeData(
+-              primaryColor: kPrimaryColor,
+-              scaffoldBackgroundColor: Colors.white,
+-              elevatedButtonTheme: ElevatedButtonThemeData(
+-                style: ElevatedButton.styleFrom(
+-                  elevation: 0,
+-                  primary: kPrimaryColor,
+-                  shape: const StadiumBorder(),
+-                  maximumSize: const Size(double.infinity, 56),
+-                  minimumSize: const Size(double.infinity, 56),
+-                ),
+-              ),
+-              inputDecorationTheme: const InputDecorationTheme(
+-                filled: true,
+-                fillColor: kPrimaryLightColor,
+-                iconColor: kPrimaryColor,
+-                prefixIconColor: kPrimaryColor,
+-                contentPadding: EdgeInsets.symmetric(
+-                    horizontal: defaultPadding, vertical: defaultPadding),
+-                border: OutlineInputBorder(
+-                  borderRadius: BorderRadius.all(Radius.circular(30)),
+-                  borderSide: BorderSide.none,
+-                ),
+-              )),
+-          home:  MainPage(),
+-          // home:  HomePage(),
+-        );
+-      }
+-    );
+-  }
+-}
+Index: lib/mainpage2.dart
+===================================================================
+diff --git a/lib/mainpage2.dart b/lib/mainpage2.dart
+deleted file mode 100644
+--- a/lib/mainpage2.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,50 +0,0 @@
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-import 'package:pps_web_admin/constants.dart';
+-
+-import 'Screens/HomePage/home.dart';
+-import 'Screens/Login/login_screen.dart';
+-import 'Screens/Welcome/welcome_screen.dart';
+-
+-
+-class MainPage extends StatefulWidget {
+-  const MainPage({Key? key}) : super(key: key);
+-
+-  @override
+-  State<MainPage> createState() => _MainPageState();
+-}
+-
+-class _MainPageState extends State<MainPage> {
+-  @override
+-  void initState() {
+-    getValue();
+-    super.initState();
+-  }
+-  getValue() async {
+-    userCount = await getUser();
+-    vetCount = await getVets();
+-    clinicCount = await getClinic();
+-    bookingList = await getBookings();
+-    vetList   =await fetchDoctors();
+-    newVetList =await fetchNewDoctors();
+-    userList=await fetchUsers();
+-    bookingCount = bookingList.length;
+-    setState(() {});
+-    print(userList);
+-  }
+-  @override
+-  Widget build(BuildContext context) {
+-    return  Scaffold(
+-      body: StreamBuilder<User?>(stream: FirebaseAuth.instance.authStateChanges(),
+-      builder:(context, snapshot){
+-        if (snapshot.hasData) {
+-          return HomePage();
+-        } else {
+-          return LoginScreen();
+-        }
+-      },
+-      )
+-    );
+-
+-  }
+-}
+Index: lib/responsive.dart
+===================================================================
+diff --git a/lib/responsive.dart b/lib/responsive.dart
+deleted file mode 100644
+--- a/lib/responsive.dart	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
++++ /dev/null	(revision 0cfbe9c92273d85d068a291e1374fdfecaaa53b0)
+@@ -1,36 +0,0 @@
+-import 'package:flutter/material.dart';
+-
+-class Responsive extends StatelessWidget {
+-  final Widget mobile;
+-  final Widget? tablet;
+-  final Widget desktop;
+-
+-  const Responsive({
+-    Key? key,
+-    required this.mobile,
+-    this.tablet,
+-    required this.desktop,
+-  }) : super(key: key);
+-
+-  static bool isMobile(BuildContext context) =>
+-      MediaQuery.of(context).size.width < 576;
+-
+-  static bool isTablet(BuildContext context) =>
+-      MediaQuery.of(context).size.width >= 576 &&
+-      MediaQuery.of(context).size.width <= 992;
+-
+-  static bool isDesktop(BuildContext context) =>
+-      MediaQuery.of(context).size.width > 992;
+-
+-  @override
+-  Widget build(BuildContext context) {
+-    final Size size = MediaQuery.of(context).size;
+-    if (size.width > 992) {
+-      return desktop;
+-    } else if (size.width >= 576 && tablet != null) {
+-      return tablet!;
+-    } else {
+-      return mobile;
+-    }
+-  }
+-}
