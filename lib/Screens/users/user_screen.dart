@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pps_web_admin/Screens/HomePage/home.dart';
-import 'package:pps_web_admin/Screens/doctors_edit_screen/doctors_edit_screen.dart';
 import 'package:pps_web_admin/components/widget/dashboard_name.dart';
 import 'package:pps_web_admin/components/widget/drawer.dart';
 import 'package:pps_web_admin/constants.dart';
@@ -13,21 +12,21 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../Doctors/item_list.dart';
 
-class DoctorScreen extends StatefulWidget {
-  DoctorScreen({Key? key}) : super(key: key);
+class UserScreen extends StatefulWidget {
+  UserScreen({Key? key}) : super(key: key);
 
   @override
-  _DoctorScreenState createState() => _DoctorScreenState();
+  _UserScreenState createState() => _UserScreenState();
 }
 
-class _DoctorScreenState extends State<DoctorScreen> {
+class _UserScreenState extends State<UserScreen> {
   // final user= FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Row(
           children: [
-          CustomDrawer(),
+            CustomDrawer(),
             SizedBox(
               width: 0.02.sw,
             ),
@@ -35,7 +34,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
               flex: 5,
               child: Column(
                 children: [
-                 DashboardName(title: "Doctors Dashboard",),
+                  DashboardName(title: "Users Dashboard",),
                   Expanded(
                     child: GridView.builder(
                       padding: REdgeInsets.all(10),
@@ -60,19 +59,14 @@ class _DoctorScreenState extends State<DoctorScreen> {
                                     height: 0.1.sh,
                                     margin: REdgeInsets.all(10),
                                     child: Center(child: ElevatedButton(
-                                        style: ButtonStyle(
-                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                )
-                                            )
-                                        ),
-                                      onPressed: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) {
-                                              return DoctorEditScreen(vets: vetList[index],);
-                                            }));
-                                      }, child: Text("Edit Profile"),
+                                      style: ButtonStyle(
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(8.0),
+                                              )
+                                          )
+                                      ),
+                                      onPressed: () {}, child: Text("Edit Profile"),
                                     ),),
                                   ),
                                 ],
@@ -81,7 +75,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                           ),
                         );
                       },
-                      itemCount: vetList.length,
+                      itemCount: userList.length,
                     ),
                   ),
                 ],
@@ -91,9 +85,9 @@ class _DoctorScreenState extends State<DoctorScreen> {
         ));
   }
   Widget _StackBgCard() => Column(
-        children: [
-          Expanded(
-              child: Container(
+    children: [
+      Expanded(
+          child: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("assets/images/doctor.jpg"),
@@ -102,12 +96,12 @@ class _DoctorScreenState extends State<DoctorScreen> {
               color: Colors.blue.withOpacity(0.5),
             ),
           )),
-          Expanded(
-              child: Container(
+      Expanded(
+          child: Container(
             color: Colors.white,
           )),
-        ],
-      );
+    ],
+  );
 
 
 
@@ -123,12 +117,12 @@ class _DoctorScreenState extends State<DoctorScreen> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
-                image: NetworkImage(vetList[index]
+                image: NetworkImage(userList[index]
                     .profileImg
                     .toString()),fit: BoxFit.cover)),
       ),
-      title: Text(vetList[index].name.toString()),
-      subtitle: Text(vetList[index].email.toString()),
+      title: Text(userList[index].firstname.toString()),
+      subtitle: Text(userList[index].email.toString()),
     ),
   );
 
@@ -140,11 +134,10 @@ class _DoctorScreenState extends State<DoctorScreen> {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].year.toString()),subtitle: Text("Doctors Experience"),),),)),
+        Expanded(child: Card(child: Center(child: ListTile(title: Text(userList[index].phnumber.toString()),subtitle: Text("Phone number"),),),)),
         SizedBox(width:10,),
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].qualification.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("Doctors Qualification"),),),)),
+        Expanded(child: Card(child: Center(child: ListTile(title: Text(userList[index].cNIC.toString(),overflow: TextOverflow.ellipsis,maxLines: 2),subtitle: Text("Doctors Qualification"),),),)),
         SizedBox(width:10,),
-        Expanded(child: Card(child: Center(child: ListTile(title: Text(vetList[index].price.toString()),subtitle: Text("Doctors Services"),),),)),
       ],),
   );
 

@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                                   )),
                               _statsCard(
                                   label: 'Total Bookings',
-                                  value: '${bookingList.length} Bookings',
+                                  value: '${bookingCount} Bookings',
                                   icon: Icon(
                                     Icons.book_online,
                                     size: 50,

@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pps_web_admin/constants.dart';
-import 'package:pps_web_admin/pages/HomePageNew/HomePageNew.dart';
-import 'package:pps_web_admin/pages/home/home_page.dart';
 
 import 'Screens/HomePage/home.dart';
 import 'Screens/Login/login_screen.dart';
@@ -26,11 +24,9 @@ class _MainPageState extends State<MainPage> {
     userCount = await getUser();
     vetCount = await getVets();
     clinicCount = await getClinic();
-    bookingList = await getBookings();
+    bookingCount = await getBookings();
     vetList   =await fetchDoctors();
-    newVetList =await fetchNewDoctors();
     userList=await fetchUsers();
-    bookingCount = bookingList.length;
     setState(() {});
     print(userList);
   }
@@ -40,7 +36,7 @@ class _MainPageState extends State<MainPage> {
       body: StreamBuilder<User?>(stream: FirebaseAuth.instance.authStateChanges(),
       builder:(context, snapshot){
         if (snapshot.hasData) {
-          return HomePageNew2();
+          return HomePage();
         } else {
           return LoginScreen();
         }
