@@ -1,17 +1,29 @@
+/*
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pps_web_admin/Screens/Doctors/doctor_screen.dart';
+import 'package:pps_web_admin/Screens/Doctors/new_doctor/new_doctor_screen.dart';
 import 'package:pps_web_admin/Screens/HomePage/home.dart';
+import 'package:pps_web_admin/Screens/chat_screen/chat_screen.dart';
 import 'package:pps_web_admin/Screens/users/user_screen.dart';
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return   Expanded(
-      flex: 1,
+    return   AnimatedContainer(
+      curve: Curves.easeInOutCubic,
+      duration: const Duration(milliseconds: 500),
+      width: 250 ,
+      margin: const EdgeInsets.only(bottom: 10, top: 10),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
+        color: Color.fromRGBO(20, 20, 20, 1),
+      ),
       child: Container(
-        color: Color.fromRGBO(26, 59, 106, 0.8745098039215686),
+        //color: Color.fromRGBO(26, 59, 106, 0.8745098039215686),
         child: Column(
           children: [
             UserAccountsDrawerHeader(
@@ -26,15 +38,7 @@ class CustomDrawer extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                   )),
-              /*currentAccountPicture: CircleAvatar(
-              child: ClipOval(
-                child: Image.asset('android/Images/logo.png',
-                  fit: BoxFit.fitHeight,
-                  width: 110,
-                  height: 110,
-                ),
-              ),
-          ),*/
+
               decoration: BoxDecoration(
                 //color:Color.fromRGBO(26, 59, 106, 0.023529411764705882),
               ),
@@ -71,7 +75,7 @@ class CustomDrawer extends StatelessWidget {
                 }),
             ListTile(
                 leading: Icon(
-                  Icons.person,
+                  Icons.monitor_heart_outlined,
                   color: Colors.white,
                 ),
                 title: Text('Vets',
@@ -84,6 +88,37 @@ class CustomDrawer extends StatelessWidget {
                         return DoctorScreen();
                       }));
                 }),
+            ListTile(
+                leading: Icon(
+                  Icons.new_releases_rounded,
+                  color: Colors.white,
+                ),
+                title: Text('New Vets',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
+                        return NewDoctorScreen();
+                      }));
+                }),
+            ListTile(
+              leading: Icon(
+                Icons.headset,
+                color: Colors.white,
+              ),
+              title: Text('Contact and support',
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                      return ChatScreen();
+                    }));
+              },
+            ),
             ListTile(
               leading: Icon(
                 Icons.settings,
@@ -113,3 +148,4 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 }
+*/
